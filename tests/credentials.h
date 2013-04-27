@@ -1,0 +1,2 @@
+#define GFBGRAPH_TEST_CLIENT_ID    ""
+#define GFBGRAPH_TEST_ACCESS_TOKEN ""
