@@ -8,7 +8,7 @@
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * libginstapaper is distributed in the hope that it will be useful, but
+ * libgfbgraph is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
@@ -16,6 +16,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * SECTION:gfbgraph-node
+ * @short_description: GFBGraph Node object
+ * @stability: Unstable
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFBGraphNode is the base class for the nodes in the Facebook Graph API, such a Album,
+ * a Photo or a User. Only usefull to expand the current library functionality creating
+ * new nodes based on it.
+ *
+ * This object provide the common functions to manage the relations between nodes trough the
+ * #GFBGraphConnectable interface. See #gfbgraph_node_get_connection_nodes and #gfbgraph_node_append_node
+ **/
 
 #include <rest/rest-proxy-call.h>
 
@@ -75,6 +89,11 @@ gfbgraph_node_class_init (GFBGraphNodeClass *klass)
 
         g_type_class_add_private (gobject_class, sizeof(GFBGraphNodePrivate));
 
+        /**
+         * GFBGraphNode:id
+         *
+         * The node ID. All nodes have one of this.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_ID,
                                          g_param_spec_string ("id",
@@ -161,12 +180,32 @@ gfbgraph_node_get_connection_nodes_async_thread (GSimpleAsyncResult *simple_asyn
                 g_simple_async_result_take_error (simple_async, error);
 }
 
+/**
+ * gfbgraph_node_new:
+ *
+ * Creates a new #GFBGraphNode.
+ *
+ * Return value: a new #GFBGraphNode; unref with g_object_unref()
+ **/
 GFBGraphNode*
 gfbgraph_node_new (void)
 {
         return GFBGRAPH_NODE (g_object_new (GFBGRAPH_TYPE_NODE, NULL));
 }
 
+/**
+ * gfbgraph_node_get_connection_nodes:
+ * @node: a #GFBGraphNode object which retrieve the connected nodes.
+ * @node_type: a #GFBGraphNode type #GType that determines the kind of nodes to retrieve.
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @error: (allow-none) a #GError or %NULL.
+ * 
+ * Retrieve the nodes of type @node_type connected to the @node object. The @node_type object must
+ * implement the #GFBGraphConnectionable interface and be connectable to @node type object.
+ * See gfbgraph_node_get_connection_nodes_async() for the asynchronous version of this call.
+ *
+ * Returns: a #GList of type @node_type objects with the found nodes.
+ **/
 GList*
 gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGraphAuthorizer *authorizer, GError **error)
 {
@@ -223,6 +262,21 @@ gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGrap
         return nodes_list;
 }
 
+/**
+ * gfbgraph_node_get_connection_nodes_async:
+ * @node: A #GFBGraphNode object which retrieve the connected nodes.
+ * @node_type: a #GFBGraphNode type #GType that must implement the #GFBGraphConnectionable interface.
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
+ * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
+ * @user_data: (closure); The data to pass to @callback.
+ * 
+ * Asynchronously retrieve the list of nodes of type @node_type connected to the @node object. See
+ * gfbgraph_node_get_connection_nodes() for the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call gfbgraph_node_get_connection_nodes_finish()
+ * to get the list of connected nodes.
+ **/
 void
 gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
 {
@@ -248,6 +302,17 @@ gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, G
         g_object_unref (result);
 }
 
+/**
+ * gfbgraph_node_get_connection_nodes_async_finish:
+ * @node: A #GFBGraphNode.
+ * @result: A #GAsyncResult.
+ * @error: (allow-none): An optional #GError, or %NULL.
+ *
+ * Finishes an asynchronous operation started with 
+ * gfbgraph_node_get_connection_nodes_async().
+ *
+ * Returns: a #GList of type #node_type objects with the found nodes.
+ **/
 GList*
 gfbgraph_node_get_connection_nodes_async_finish (GFBGraphNode *node, GAsyncResult *result, GError **error)
 {
@@ -266,6 +331,16 @@ gfbgraph_node_get_connection_nodes_async_finish (GFBGraphNode *node, GAsyncResul
         return data->list;
 }
 
+/**
+ * gfbgraph_node_append_connection:
+ * @node: A #GFBGraphNode.
+ * @connect_node: A #GFBGraphNode.
+ * @authorizer: A #GFBGraphAuthorizer.
+ * @error: (allow-none): An optional #GError, or %NULL.
+ *
+ * Appends @connect_node to @node. @connect_node must implement the #GFBGraphConnectable interface
+ * and be connectable to @node GType.
+ **/
 gboolean
 gfbgraph_node_append_connection (GFBGraphNode *node, GFBGraphNode *connect_node, GFBGraphAuthorizer *authorizer, GError **error)
 {

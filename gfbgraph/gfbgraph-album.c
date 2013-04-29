@@ -8,7 +8,7 @@
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * libginstapaper is distributed in the hope that it will be useful, but
+ * libgfbgraph is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
@@ -16,6 +16,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * SECTION:gfbgraph-album
+ * @short_description: GFBGraph Photo album node object
+ * @stability: Unstable
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFGraphAlbum represents the <ulink url="https://developers.facebook.com/docs/reference/api/album/">
+ * photo album node in the Graph API</ulink>.
+ *
+ * This node is connectable to:
+ *  - #GFBGraphUser
+ **/
 
 #include "gfbgraph-album.h"
 #include "gfbgraph-user.h"
@@ -72,24 +85,47 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
 
 	g_type_class_add_private (gobject_class, sizeof(GFBGraphAlbumPrivate));
 
+        /**
+         * GFBGraphAlbum:name
+         *
+         * The album name.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_NAME,
                                          g_param_spec_string ("name",
                                                               "The title", "The name of the album",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphAlbum:description.
+         *
+         * The album description given by the owner.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_DESCRIPTION,
                                          g_param_spec_string ("description",
                                                               "The description", "The description of the album",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphAlbum:cover_photo.
+         *
+         * The node ID for the album cover photo. It's an ID for a #GFBGraphPhoto node.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_COVER_PHOTO,
                                          g_param_spec_string ("cover_photo",
                                                               "Cover photo", "The ID for the cover photo of the album",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphAlbum:count
+         *
+         * The number of photos in the album.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_COUNT,
                                          g_param_spec_uint ("count",
@@ -193,6 +229,13 @@ gfbgraph_album_get_connection_post_params (GFBGraphConnectable *self, GType node
         return params;
 }
 
+/**
+ * gfbgraph_album_new:
+ *
+ * Creates a new #GFBGraphAlbum.
+ *
+ * Returns: a new #GFBGraphAlbum; unref with g_object_unref() 
+ **/
 GFBGraphAlbum*
 gfbgraph_album_new (void)
 {

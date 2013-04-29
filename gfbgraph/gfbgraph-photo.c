@@ -21,7 +21,6 @@
 #include "gfbgraph-connectable.h"
 #include "gfbgraph-album.h"
 
-#define LIBSOUP_USE_UNSTABLE_REQUEST_API
 #include <libsoup/soup.h>
 #include <libsoup/soup-request.h>
 #include <libsoup/soup-request-http.h>
