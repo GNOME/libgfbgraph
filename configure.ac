@@ -9,7 +9,7 @@ AC_INIT([gfbgraph], [gfbgraph_version],
         [gfbgraph],
         [https://github.com/alvaropg/libgfbgraph.git])
 
-AC_CONFIG_SRCDIR([gfbgraph/gfbgraph-proxy.h])
+AC_CONFIG_SRCDIR([gfbgraph/gfbgraph.h])
 AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_MACRO_DIR([m4])

@@ -1,5 +1,4 @@
 #include <gfbgraph/gfbgraph.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include "gfbgraph-simple-authorizer.h"
 
 static GMainLoop *main_loop;
@@ -21,19 +20,10 @@ photo_async_cb (GFBGraphNode *album_node, GAsyncResult *res, GFBGraphAuthorizer 
                 GFBGraphPhoto *photo;
                 gchar *name, *source;
                 guint width, height;
-                GInputStream *stream;
-                GdkPixbuf *pixbuf;
 
                 photo = GFBGRAPH_PHOTO (photos->data);
                 g_object_get (photo, "name", &name, "width", &width, "height", &height, "source", &source, NULL);
                 g_print ("\t\t%s (%dx%d): %s\n", name, width, height, source);
-                g_print ("\t\t\tDownloading... ");
-                stream = gfbgraph_photo_download_default_size (photo, authorizer);
-                pixbuf = gdk_pixbuf_new_from_stream (stream, NULL, NULL);
-                if (gdk_pixbuf_save (pixbuf, name, "jpeg", NULL, NULL))
-                        g_print ("  OK\n");
-                else
-                        g_print ("  Failed\n");
                 g_free (name);
 
                 photos = g_list_next (photos);
