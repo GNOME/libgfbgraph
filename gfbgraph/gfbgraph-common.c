@@ -24,7 +24,7 @@
 #define FACEBOOK_ENDPOINT "https://graph.facebook.com"
 
 /**
- * gfbgraog_new_rest_call:
+ * gfbgraph_new_rest_call:
  * @authorizer: a #GFBGraphAuthorizer.
  *
  * Create a new #RestProxyCall pointing to the Facebook Graph API url (https://graph.facebook.com)

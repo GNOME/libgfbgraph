@@ -17,6 +17,16 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:gfbgraph-goa-authorizer
+ * @short_description: GFBGraph GOA authorization interface
+ * @stability: Unstable
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFBGraphGoaAuthorizer provides an implementation of the #GFBGraphAuthorizer interface
+ * for authorization using GNOME Online Accounts (GOA).
+ **/
+
 #include "gfbgraph-authorizer.h"
 #include "gfbgraph-goa-authorizer.h"
 
@@ -65,6 +75,12 @@ gfbgraph_goa_authorizer_class_init (GFBGraphGoaAuthorizerClass *klass)
         gobject_class->set_property = gfbgraph_goa_authorizer_set_property;
         gobject_class->dispose = gfbgraph_goa_authorizer_dispose;
 
+        /**
+         * GFBGraphGoaAuthorizer:goa-object:
+         *
+         * The GOA account providing authentication.
+         *
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_GOA_OBJECT,
                                          g_param_spec_object ("goa-object",
