@@ -17,6 +17,16 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:gfbgraph-authorizer
+ * @title: GFBGraphAuthorizer
+ * @short_description: Facebook Graph API authorization interface.
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFBGraphAuthorizer interface provides a uniform way to implement authentication
+ * and authorization process for use by GFBGraph functions.
+ **/
+
 #include "gfbgraph-authorizer.h"
 
 G_DEFINE_INTERFACE (GFBGraphAuthorizer, gfbgraph_authorizer, G_TYPE_OBJECT)
@@ -27,7 +37,7 @@ gfbgraph_authorizer_default_init (GFBGraphAuthorizerInterface *iface)
 }
 
 /**
- * GFBGraph_authorizer_process_call:
+ * gfbgraph_authorizer_process_call:
  * @iface: A #GFBGraphAuthorizer.
  * @call: A #RestProxyCall.
  *
@@ -43,7 +53,7 @@ gfbgraph_authorizer_process_call (GFBGraphAuthorizer *iface, RestProxyCall *call
 }
 
 /**
- * GFBGraph_authorizer_process_message:
+ * gfbgraph_authorizer_process_message:
  * @iface: A #GFBGraphAuthorizer.
  * @message: A #SoupMessage.
  *
@@ -60,10 +70,9 @@ gfbgraph_authorizer_process_message (GFBGraphAuthorizer *iface, SoupMessage *mes
 }
 
 /**
- * GFBGraph_authorizer_refresh_authorization:
+ * gfbgraph_authorizer_refresh_authorization:
  * @iface: A #GFBGraphAuthorizer.
- * @cancellable: (allow-none): An optional #GCancellable object, or
- *   %NULL.
+ * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @error: (allow-none): An optional #GError, or %NULL.
  *
  * Synchronously forces @iface to refresh any authorization tokens

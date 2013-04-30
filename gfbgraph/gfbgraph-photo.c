@@ -17,6 +17,15 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:gfbgraph-photo
+ * @short_description: GFBGraph Photo node
+ * @stability: Unstable
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFBGraphPhoto represents a <ulink url="https://developers.facebook.com/docs/reference/api/photo/">photo in the Facebook Graph API</ulink>.
+ **/
+
 #include "gfbgraph-photo.h"
 #include "gfbgraph-connectable.h"
 #include "gfbgraph-album.h"
@@ -76,6 +85,11 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
 
         g_type_class_add_private (gobject_class, sizeof(GFBGraphPhotoPrivate));
 
+        /**
+         * GFBGraphPhoto:name
+         *
+         * The name of the photo given by his owner.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_NAME,
                                          g_param_spec_string ("name",
@@ -83,6 +97,11 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
+        /**
+         * GFBGraphPhoto:source
+         *
+         * An URI for the photo, with a maximum width or height of 720px.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_SOURCE,
                                          g_param_spec_string ("source",
@@ -90,6 +109,11 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
+        /**
+         * GFBGraphPhoto:width
+         *
+         * The default photo width, up to 720px.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_WIDTH,
                                          g_param_spec_uint ("width",
@@ -97,6 +121,11 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                             0, G_MAXUINT, 0,
                                                             G_PARAM_READABLE | G_PARAM_WRITABLE));
 
+        /**
+         * GFBGraphPhoto:height
+         *
+         * The default photo height, up to 720px.
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_HEIGHT,
                                          g_param_spec_uint ("height",
@@ -195,21 +224,38 @@ gfbgraph_photo_get_connection_post_params (GFBGraphConnectable *self, GType node
         return params;
 }
 
+/**
+ * gfbgraph_photo_new()
+ *
+ * Creates a new #GFBGraphPhoto.
+ *
+ * Returns: a new #GFBGraphPhoto; unref with g_object_unref()
+ **/
 GFBGraphPhoto*
 gfbgraph_photo_new (void)
 {
         return GFBGRAPH_PHOTO(g_object_new(GFBGRAPH_TYPE_PHOTO, NULL));
 }
 
+/**
+ * gfbgraph_photo_download_default_size:
+ * @photo: a #GFBGraphPhoto.
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @error: (allow-none) a #GError or %NULL.
+ *
+ * Download the default sized photo pointed by @photo, with a maximum width or height of 720px.
+ * The photo always is a JPEG.
+ *
+ * Returns: a #GInputStream with the photo content or %NULL in case of error.
+ **/
 GInputStream*
-gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer)
+gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer, GError **error)
 {
         GInputStream *stream = NULL;
         SoupSession *session;
         SoupRequester *requester;
         SoupRequest *request;
         SoupMessage *message;
-        GError *error = NULL;
         GFBGraphPhotoPrivate *priv;
 
         g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
@@ -221,12 +267,12 @@ gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *
         requester = soup_requester_new ();
         soup_session_add_feature (session, SOUP_SESSION_FEATURE (requester));
 
-        request = soup_requester_request (requester, priv->source, &error);
+        request = soup_requester_request (requester, priv->source, error);
         if (request != NULL) {
                 message = soup_request_http_get_message (SOUP_REQUEST_HTTP (request));
                 gfbgraph_authorizer_process_message (authorizer, message);
 
-                stream = soup_request_send (request, NULL, &error);
+                stream = soup_request_send (request, NULL, error);
                 if (stream != NULL) {
                         g_object_weak_ref (G_OBJECT (stream), (GWeakNotify) g_object_unref, session);
                 }

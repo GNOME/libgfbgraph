@@ -8,7 +8,7 @@
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * libginstapaper is distributed in the hope that it will be useful, but
+ * libgfbgraph is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
@@ -16,6 +16,16 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * SECTION:gfbgraph-user
+ * @short_description: GFBGraph User node
+ * @stability: Unstable
+ * @include: gfbgraph/gfbgraph.h
+ *
+ * #GFBGraphUser represents a <ulink url="https://developers.facebook.com/docs/reference/api/user/">user in Facebook</ulink>.
+ * With the "me" functions, (see gfbgraph_user_get_me()) you can query for the logged user node.
+ **/
 
 #include "gfbgraph-user.h"
 #include "gfbgraph-album.h"
@@ -73,6 +83,11 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 
 	g_type_class_add_private (gobject_class, sizeof(GFBGraphUserPrivate));
 
+        /**
+         * GFBGraphUser:name
+         *
+         * The full name of the user
+         **/
         g_object_class_install_property (gobject_class,
                                          PROP_NAME,
                                          g_param_spec_string ("name",
@@ -145,12 +160,29 @@ gfbgraph_user_get_me_async_thread (GSimpleAsyncResult *simple_async, GFBGraphAut
                 g_simple_async_result_take_error (simple_async, error);
 }
 
+/**
+ * gfbgraph_user_new:
+ *
+ * Creates a new #GFBGraphAlbum.
+ *
+ * Returns: a new #GFBGraphAlbum; unref with g_object_unref()
+ **/
 GFBGraphUser*
 gfbgraph_user_new (void)
 {
 	return GFBGRAPH_USER (g_object_new (GFBGRAPH_TYPE_USER, NULL));
 }
 
+/**
+ * gfbgraph_user_get_me:
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @error: (allow-none) a #GError or %NULL.
+ *
+ * Retrieve the current user logged using the https://graph.facebook.com/me Graph API function.
+ * See gfbgraph_user_get_my_async() for the asynchronous version of this call.
+ *
+ * Returns: a #GFBGraphUser with the current user information.
+ **/
 GFBGraphUser*
 gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
 {
@@ -185,6 +217,19 @@ gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
         return me;
 }
 
+/**
+ * gfbgraph_user_get_me_async:
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
+ * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
+ * @user_data: (closure); The data to pass to @callback.
+ * 
+ * Asynchronously retrieve the current user logged. See gfbgraph_user_get_me() for the
+ * synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call gfbgraph_user_get_me_finish()
+ * to get the #GFBGraphUser for to the current user logged.
+ **/
 void
 gfbgraph_user_get_me_async (GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
 {
@@ -207,6 +252,17 @@ gfbgraph_user_get_me_async (GFBGraphAuthorizer *authorizer, GCancellable *cancel
         g_object_unref (simple_async);
 }
 
+/**
+ * gfbgraph_user_get_me_async_finish:
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @result: A #GAsyncResult.
+ * @error: (allow-none): An optional #GError, or %NULL.
+ *
+ * Finishes an asynchronous operation started with 
+ * gfbgraph_user_get_me_async().
+ *
+ * Returns: a #GFBGraphUser for to the current user logged.
+ **/
 GFBGraphUser*
 gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer *authorizer, GAsyncResult *result, GError **error)
 {

@@ -49,7 +49,7 @@ struct _GFBGraphPhotoClass {
 GType          gfbgraph_photo_get_type (void) G_GNUC_CONST;
 GFBGraphPhoto* gfbgraph_photo_new      (void);
 
-GInputStream*  gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer);
+GInputStream*  gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer, GError **error);
 
 G_END_DECLS
 
