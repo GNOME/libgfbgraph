@@ -72,12 +72,12 @@ GFBGraph_@API_MAJOR@_@API_MINOR@_gir_LIBS = libgfbgraph-@API_VERSION@.la
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_FILES = $(lib_sources) $(lib_headers)
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_NAMESPACE = GFBGraph
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_EXPORT_PACKAGES = libgfbgraph.@API_VERSION@
-GFBGraph_@API_MAJOR@_@API_MINOR@_gir_SCANNERFLAGS = \
+GFBGraph_@API_MAJOR@_@API_MINOR@_gir_SCANNER_FLAGS = \
+	--warn-all				\
 	--nsversion=$(API_VERSION)		\
 	--symbol-prefix=gfbgraph		\
 	--identifier-prefix = GFBGraph		\
 	--c-include="gfbgraph/gfbgraph.h"
-#	--warn-all
 
 INTROSPECTION_GIRS += GFBGraph-$(API_VERSION).gir
 
