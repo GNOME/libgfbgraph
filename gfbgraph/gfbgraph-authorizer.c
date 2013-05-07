@@ -29,7 +29,7 @@
 
 #include "gfbgraph-authorizer.h"
 
-G_DEFINE_INTERFACE (GFBGraphAuthorizer, gfbgraph_authorizer, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (GFBGraphAuthorizer, gfbgraph_authorizer, G_TYPE_OBJECT);
 
 static void
 gfbgraph_authorizer_default_init (GFBGraphAuthorizerInterface *iface)
