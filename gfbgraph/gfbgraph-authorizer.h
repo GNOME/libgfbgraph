@@ -29,13 +29,22 @@ G_BEGIN_DECLS
 
 #define GFBGRAPH_TYPE_AUTHORIZER          (gfbgraph_authorizer_get_type ())
 #define GFBGRAPH_AUTHORIZER(o)            (G_TYPE_CHECK_INSTANCE_CAST ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizer))
-#define GFBGRAPH_AUTHORIZER_CLASS(k)      (G_TYPE_CHECK_CLASS_CAST((k), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizerInterface))
 #define GFBGRAPH_IS_AUTHORIZER(o)         (G_TYPE_CHECK_INSTANCE_TYPE ((o), GFBGRAPH_TYPE_AUTHORIZER))
 #define GFBGRAPH_AUTHORIZER_GET_IFACE(o)  (G_TYPE_INSTANCE_GET_INTERFACE ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizerInterface))
 
 typedef struct _GFBGraphAuthorizer          GFBGraphAuthorizer;
 typedef struct _GFBGraphAuthorizerInterface GFBGraphAuthorizerInterface;
 
+/**
+ * GFBGraphAuthorizerInterface:
+ * @parent: The parent interface.
+ * @process_call: A method to append authorization headers to a a #RestProxyCall.
+ * @process_message: A method to append authorization headers to a #SoupMessage.
+ * @refresh_authorization: A synchronous method to force a refresh of any authorization
+ *  tokes held by the authorizer. It should return %TRUE on succes.
+ *
+ * Interface structure for #GFBGraphAuthorizer. All methos should be thread safe.
+ **/
 struct _GFBGraphAuthorizerInterface {
         GTypeInterface parent;
 
@@ -48,7 +57,7 @@ struct _GFBGraphAuthorizerInterface {
                                               GError **error);
 };
 
-GType    gfbgraph_authorizer_get_type (void) G_GNUC_CONST;
+GType    gfbgraph_authorizer_get_type              (void) G_GNUC_CONST;
 
 void     gfbgraph_authorizer_process_call          (GFBGraphAuthorizer *iface,
                                                     RestProxyCall *call);
