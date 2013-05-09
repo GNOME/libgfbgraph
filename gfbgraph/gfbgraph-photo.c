@@ -238,6 +238,23 @@ gfbgraph_photo_new (void)
 }
 
 /**
+ * gfbgraph_photo_new_from_id:
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @id: a const #gchar with the photo ID.
+ * @error: (allow-none): a #GError or %NULL.
+ *
+ * Retrieves an photo node from the Facebook Graph with the give ID.
+ *
+ * Returns: a new #GFBGraphPhoto; unref with g_object_unref()
+ **/
+GFBGraphPhoto*
+gfbgraph_photo_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error)
+{
+        return GFBGRAPH_PHOTO (gfbgraph_node_new_from_id (authorizer, id, GFBGRAPH_TYPE_PHOTO, error));
+}
+
+
+/**
  * gfbgraph_photo_download_default_size:
  * @photo: a #GFBGraphPhoto.
  * @authorizer: a #GFBGraphAuthorizer.

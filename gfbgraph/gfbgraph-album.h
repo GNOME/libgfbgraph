@@ -21,6 +21,7 @@
 #define __GFBGRAPH_ALBUM_H__
 
 #include <gfbgraph/gfbgraph-node.h>
+#include <gfbgraph/gfbgraph-authorizer.h>
 
 G_BEGIN_DECLS
 
@@ -47,6 +48,7 @@ struct _GFBGraphAlbumClass {
 
 GType          gfbgraph_album_get_type    (void) G_GNUC_CONST;
 GFBGraphAlbum* gfbgraph_album_new         (void);
+GFBGraphAlbum* gfbgraph_album_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error);
 
 G_END_DECLS
 

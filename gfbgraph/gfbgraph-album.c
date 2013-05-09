@@ -241,3 +241,19 @@ gfbgraph_album_new (void)
 {
 	return GFBGRAPH_ALBUM (g_object_new(GFBGRAPH_TYPE_ALBUM, NULL));
 }
+
+/**
+ * gfbgraph_album_new_from_id:
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @id: a const #gchar with the album ID.
+ * @error: (allow-none): a #GError or %NULL.
+ *
+ * Retrieves an album node from the Facebook Graph with the give ID.
+ *
+ * Returns: a new #GFBGraphAlbum; unref with g_object_unref()
+ **/
+GFBGraphAlbum*
+gfbgraph_album_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error)
+{
+        return GFBGRAPH_ALBUM (gfbgraph_node_new_from_id (authorizer, id, GFBGRAPH_TYPE_ALBUM, error));
+}
