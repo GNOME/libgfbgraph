@@ -177,7 +177,7 @@ gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_
  * Normally, Facebook Graph API returns the connections in the same way, using JSON objects,
  * with a root object called "data".
  *
- * Returns: 
+ * Returns: a #GList of #GFBGraphNode with the same #GType as @self.
  **/
 GList*
 gfbgraph_connectable_default_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)

@@ -32,6 +32,8 @@
  **/
 
 #include <rest/rest-proxy-call.h>
+#include <json-glib/json-glib.h>
+#include <string.h>
 
 #include "gfbgraph-common.h"
 #include "gfbgraph-connectable.h"
@@ -191,6 +193,50 @@ GFBGraphNode*
 gfbgraph_node_new (void)
 {
         return GFBGRAPH_NODE (g_object_new (GFBGRAPH_TYPE_NODE, NULL));
+}
+
+/**
+ * gfbgraph_node_new_from_id:
+ * @id: a const #gchar with the node ID.
+ * @node_type: a #GFBGraphNode type #GType.
+ * @authorizer: a #GFBGraphAuthorizer.
+ * @error: (allow-none): a #GError or %NULL.
+ *
+ * Retrieve a node object as a #GFBgraphNode of #node_type type, with the given @id from the Facebook Graph.
+ * 
+ * Returns: a #GFBGraphNode or %NULL.
+ **/
+GFBGraphNode*
+        gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GType node_type, GError **error)
+{
+        GFBGraphNode *node;
+        RestProxyCall *rest_call;
+
+        g_return_val_if_fail ((strlen (id) > 0), NULL);
+        g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer), NULL);
+        g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), NULL);
+
+        rest_call = gfbgraph_new_rest_call (authorizer);
+        rest_proxy_call_set_method (rest_call, "GET");
+        rest_proxy_call_set_function (rest_call, id);
+
+        node = NULL;
+        if (rest_proxy_call_sync (rest_call, error)) {
+                JsonParser *jparser;
+                JsonNode *jnode;
+                const gchar *payload;
+
+                payload = rest_proxy_call_get_payload (rest_call);
+                jparser = json_parser_new ();
+                if (json_parser_load_from_data (jparser, payload, -1, error)) {
+                        jnode = json_parser_get_root (jparser);
+                        node = GFBGRAPH_NODE (json_gobject_deserialize (node_type, jnode));
+                }
+
+                g_object_unref (jparser);
+        }
+
+        return node;        
 }
 
 /**

@@ -57,6 +57,7 @@ GType          gfbgraph_node_get_type    (void) G_GNUC_CONST;
 GQuark         gfbgraph_node_error_quark (void) G_GNUC_CONST;
 GFBGraphNode*  gfbgraph_node_new         (void);
 
+GFBGraphNode*  gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GType node_type, GError **error);
 
 GList*         gfbgraph_node_get_connection_nodes              (GFBGraphNode         *node, 
                                                                 GType                 node_type,

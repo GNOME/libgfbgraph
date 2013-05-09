@@ -50,10 +50,15 @@ struct _GFBGraphUserClass {
 
 GType         gfbgraph_user_get_type  (void) G_GNUC_CONST;
 GFBGraphUser* gfbgraph_user_new       (void);
+GFBGraphUser* gfbgraph_user_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error);
 
 GFBGraphUser* gfbgraph_user_get_me              (GFBGraphAuthorizer *authorizer, GError **error);
 void          gfbgraph_user_get_me_async        (GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 GFBGraphUser* gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer *authorizer, GAsyncResult *result, GError **error);
+
+GList*        gfbgraph_user_get_albums              (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GError **error);
+void          gfbgraph_user_get_albums_async        (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+GList*        gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result, GError **error);
 
 G_END_DECLS
 
