@@ -79,12 +79,12 @@ GFBGraph_@API_MAJOR@_@API_MINOR@_gir_SCANNER_FLAGS = \
 	--identifier-prefix = GFBGraph		\
 	--c-include="gfbgraph/gfbgraph.h"
 
-INTROSPECTION_GIRS += GFBGraph-$(API_VERSION).gir
+INTROSPECTION_GIRS += GFBGraph-@API_VERSION@.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = ../girepository-1.0
+typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = $(gir_DATA) $(typelib_DATA)
