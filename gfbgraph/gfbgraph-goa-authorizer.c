@@ -242,7 +242,7 @@ gfbgraph_goa_authorizer_set_goa_object (GFBGraphGoaAuthorizer *self, GoaObject *
  *
  * Creates a new #GFBGraphGoaAuthorizer using @goa_object as account.
  *
- * Returns: A new #GFBGraphGoaAuthorizer. Use g_object_unref() to free it.
+ * Returns: (transfer full): A new #GFBGraphGoaAuthorizer. Use g_object_unref() to free it.
  */
 GFBGraphGoaAuthorizer*
 gfbgraph_goa_authorizer_new (GoaObject *goa_object)

@@ -6,7 +6,9 @@ lib_sources = \
 	gfbgraph-goa-authorizer.c	\
 	gfbgraph-node.c			\
 	gfbgraph-photo.c		\
+	gfbgraph-simple-authorizer.c    \
 	gfbgraph-user.c
+
 lib_headers = \
 	gfbgraph.h 			\
 	gfbgraph-album.h		\
@@ -16,6 +18,7 @@ lib_headers = \
 	gfbgraph-goa-authorizer.h	\
 	gfbgraph-node.h			\
 	gfbgraph-photo.h		\
+	gfbgraph-simple-authorizer.h    \
 	gfbgraph-user.h
 
 lib_LTLIBRARIES = libgfbgraph-@API_VERSION@.la
@@ -44,7 +47,7 @@ libgfbgraph_@API_VERSION@_ladir = $(includedir)/gfbgraph-@API_VERSION@/gfbgraph
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
@@ -54,10 +57,11 @@ GFBGraph-@API_VERSION@.gir: libgfbgraph-@API_VERSION@.la Makefile
 
 
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_INCLUDES = \
+	GLib-2.0 	\
+	Gio-2.0		\
 	GObject-2.0	\
 	Rest-0.7	\
 	Json-1.0	\
-	Gio-2.0		\
 	Soup-2.4
 
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_CFLAGS = \
@@ -72,11 +76,10 @@ GFBGraph_@API_MAJOR@_@API_MINOR@_gir_LIBS = libgfbgraph-@API_VERSION@.la
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_FILES = $(lib_sources) $(lib_headers)
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_NAMESPACE = GFBGraph
 GFBGraph_@API_MAJOR@_@API_MINOR@_gir_EXPORT_PACKAGES = libgfbgraph.@API_VERSION@
-GFBGraph_@API_MAJOR@_@API_MINOR@_gir_SCANNER_FLAGS = \
-	--warn-all				\
+GFBGraph_@API_MAJOR@_@API_MINOR@_gir_SCANNERFLAGS = \
 	--nsversion=$(API_VERSION)		\
 	--symbol-prefix=gfbgraph		\
-	--identifier-prefix = GFBGraph		\
+	--identifier-prefix=GFBGraph		\
 	--c-include="gfbgraph/gfbgraph.h"
 
 INTROSPECTION_GIRS += GFBGraph-@API_VERSION@.gir

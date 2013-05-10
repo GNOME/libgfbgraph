@@ -41,6 +41,7 @@ typedef struct _GFBGraphNodePrivate GFBGraphNodePrivate;
 struct _GFBGraphNode {
         GObject parent;
 
+        /*< private >*/
         GFBGraphNodePrivate *priv;
 };
 

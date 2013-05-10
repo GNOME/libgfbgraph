@@ -39,6 +39,7 @@ typedef struct _GFBGraphPhotoPrivate GFBGraphPhotoPrivate;
 struct _GFBGraphPhoto {
         GFBGraphNode parent;
 
+        /*< private >*/
         GFBGraphPhotoPrivate *priv;
 };
 

@@ -1,5 +1,6 @@
 #include <gfbgraph/gfbgraph.h>
-#include "gfbgraph-simple-authorizer.h"
+#include <gfbgraph/gfbgraph-simple-authorizer.h>
+#include "credentials.h"
 
 static GMainLoop *main_loop;
 
@@ -104,7 +105,7 @@ main (int argc, char **argv)
         g_type_init ();
         main_loop = g_main_loop_new (NULL, TRUE);
 
-        authorizer = gfbgraph_simple_authorizer_new ();
+        authorizer = gfbgraph_simple_authorizer_new (GFBGRAPH_TEST_ACCESS_TOKEN);
 
         /* Get "me" user */
         gfbgraph_user_get_me_async (GFBGRAPH_AUTHORIZER (authorizer), NULL, (GAsyncReadyCallback) me_async_cb, NULL);

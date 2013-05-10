@@ -41,6 +41,7 @@ typedef struct _GFBGraphUserPrivate         GFBGraphUserPrivate;
 struct _GFBGraphUser {
         GFBGraphNode parent;
 
+        /*< private >*/
 	GFBGraphUserPrivate *priv;
 };
 

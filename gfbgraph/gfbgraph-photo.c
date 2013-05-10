@@ -86,7 +86,7 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
         g_type_class_add_private (gobject_class, sizeof(GFBGraphPhotoPrivate));
 
         /**
-         * GFBGraphPhoto:name
+         * GFBGraphPhoto:name:
          *
          * The name of the photo given by his owner.
          **/
@@ -98,7 +98,7 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphPhoto:source
+         * GFBGraphPhoto:source:
          *
          * An URI for the photo, with a maximum width or height of 720px.
          **/
@@ -110,7 +110,7 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphPhoto:width
+         * GFBGraphPhoto:width:
          *
          * The default photo width, up to 720px.
          **/
@@ -122,7 +122,7 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                             G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphPhoto:height
+         * GFBGraphPhoto:height:
          *
          * The default photo height, up to 720px.
          **/
@@ -225,11 +225,11 @@ gfbgraph_photo_get_connection_post_params (GFBGraphConnectable *self, GType node
 }
 
 /**
- * gfbgraph_photo_new()
+ * gfbgraph_photo_new:
  *
  * Creates a new #GFBGraphPhoto.
  *
- * Returns: a new #GFBGraphPhoto; unref with g_object_unref()
+ * Returns: (transfer full): a new #GFBGraphPhoto; unref with g_object_unref()
  **/
 GFBGraphPhoto*
 gfbgraph_photo_new (void)
@@ -245,7 +245,7 @@ gfbgraph_photo_new (void)
  *
  * Retrieves an photo node from the Facebook Graph with the give ID.
  *
- * Returns: a new #GFBGraphPhoto; unref with g_object_unref()
+ * Returns: (transfer full): a new #GFBGraphPhoto; unref with g_object_unref()
  **/
 GFBGraphPhoto*
 gfbgraph_photo_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error)
@@ -263,7 +263,7 @@ gfbgraph_photo_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GEr
  * Download the default sized photo pointed by @photo, with a maximum width or height of 720px.
  * The photo always is a JPEG.
  *
- * Returns: a #GInputStream with the photo content or %NULL in case of error.
+ * Returns: (transfer full): a #GInputStream with the photo content or %NULL in case of error.
  **/
 GInputStream*
 gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer, GError **error)

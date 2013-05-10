@@ -86,7 +86,7 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
 	g_type_class_add_private (gobject_class, sizeof(GFBGraphAlbumPrivate));
 
         /**
-         * GFBGraphAlbum:name
+         * GFBGraphAlbum:name:
          *
          * The album name.
          **/
@@ -98,7 +98,7 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphAlbum:description.
+         * GFBGraphAlbum:description:
          *
          * The album description given by the owner.
          **/
@@ -110,7 +110,7 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphAlbum:cover_photo.
+         * GFBGraphAlbum:cover_photo:
          *
          * The node ID for the album cover photo. It's an ID for a #GFBGraphPhoto node.
          **/
@@ -122,7 +122,7 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 
         /**
-         * GFBGraphAlbum:count
+         * GFBGraphAlbum:count:
          *
          * The number of photos in the album.
          **/
@@ -234,7 +234,7 @@ gfbgraph_album_get_connection_post_params (GFBGraphConnectable *self, GType node
  *
  * Creates a new #GFBGraphAlbum.
  *
- * Returns: a new #GFBGraphAlbum; unref with g_object_unref() 
+ * Returns: (transfer full): a new #GFBGraphAlbum; unref with g_object_unref() 
  **/
 GFBGraphAlbum*
 gfbgraph_album_new (void)
@@ -250,7 +250,7 @@ gfbgraph_album_new (void)
  *
  * Retrieves an album node from the Facebook Graph with the give ID.
  *
- * Returns: a new #GFBGraphAlbum; unref with g_object_unref()
+ * Returns: (transfer full): a new #GFBGraphAlbum; unref with g_object_unref()
  **/
 GFBGraphAlbum*
 gfbgraph_album_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error)

@@ -39,6 +39,7 @@ typedef struct _GFBGraphGoaAuthorizerPrivate GFBGraphGoaAuthorizerPrivate;
 struct _GFBGraphGoaAuthorizer {
          GObject parent;
 
+        /*< private >*/
         GFBGraphGoaAuthorizerPrivate *priv;
 };
 

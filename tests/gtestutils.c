@@ -1,8 +1,9 @@
 #include "config.h"
+#include "credentials.h"
 #include <glib.h>
 #include <gfbgraph/gfbgraph.h>
+#include <gfbgraph/gfbgraph-simple-authorizer.h>
 
-#include "gfbgraph-simple-authorizer.h"
 
 int
 main (int argc, char **argv)
@@ -12,7 +13,7 @@ main (int argc, char **argv)
         g_type_init ();
         g_test_init (&argc, &argv, NULL);
 
-        authorizer = gfbgraph_simple_authorizer_new ();
+        authorizer = gfbgraph_simple_authorizer_new (GFBGRAPH_TEST_ACCESS_TOKEN);
 
         //g_test_add_data_func ("/GInstapaper/Bookmarks/List", proxy, (GTestDataFunc) ginstapaper_test_bookmarks_list);
 

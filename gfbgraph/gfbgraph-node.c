@@ -92,7 +92,7 @@ gfbgraph_node_class_init (GFBGraphNodeClass *klass)
         g_type_class_add_private (gobject_class, sizeof(GFBGraphNodePrivate));
 
         /**
-         * GFBGraphNode:id
+         * GFBGraphNode:id:
          *
          * The node ID. All nodes have one of this.
          **/
@@ -187,7 +187,7 @@ gfbgraph_node_get_connection_nodes_async_thread (GSimpleAsyncResult *simple_asyn
  *
  * Creates a new #GFBGraphNode.
  *
- * Return value: a new #GFBGraphNode; unref with g_object_unref()
+ * Returns: (transfer full): a new #GFBGraphNode; unref with g_object_unref()
  **/
 GFBGraphNode*
 gfbgraph_node_new (void)
@@ -204,10 +204,10 @@ gfbgraph_node_new (void)
  *
  * Retrieve a node object as a #GFBgraphNode of #node_type type, with the given @id from the Facebook Graph.
  * 
- * Returns: a #GFBGraphNode or %NULL.
+ * Returns: (transfer full): a #GFBGraphNode or %NULL.
  **/
 GFBGraphNode*
-        gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GType node_type, GError **error)
+gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GType node_type, GError **error)
 {
         GFBGraphNode *node;
         RestProxyCall *rest_call;
@@ -244,13 +244,13 @@ GFBGraphNode*
  * @node: a #GFBGraphNode object which retrieve the connected nodes.
  * @node_type: a #GFBGraphNode type #GType that determines the kind of nodes to retrieve.
  * @authorizer: a #GFBGraphAuthorizer.
- * @error: (allow-none) a #GError or %NULL.
+ * @error: (allow-none): a #GError or %NULL.
  * 
  * Retrieve the nodes of type @node_type connected to the @node object. The @node_type object must
  * implement the #GFBGraphConnectionable interface and be connectable to @node type object.
  * See gfbgraph_node_get_connection_nodes_async() for the asynchronous version of this call.
  *
- * Returns: a #GList of type @node_type objects with the found nodes.
+ * Returns: (transfer full): a #GList of type @node_type objects with the found nodes.
  **/
 GList*
 gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGraphAuthorizer *authorizer, GError **error)
@@ -315,7 +315,7 @@ gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGrap
  * @authorizer: a #GFBGraphAuthorizer.
  * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
- * @user_data: (closure); The data to pass to @callback.
+ * @user_data: (closure): The data to pass to @callback.
  * 
  * Asynchronously retrieve the list of nodes of type @node_type connected to the @node object. See
  * gfbgraph_node_get_connection_nodes() for the synchronous version of this call.
@@ -357,7 +357,7 @@ gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, G
  * Finishes an asynchronous operation started with 
  * gfbgraph_node_get_connection_nodes_async().
  *
- * Returns: a #GList of type #node_type objects with the found nodes.
+ * Returns: (transfer full): a #GList of type #node_type objects with the found nodes.
  **/
 GList*
 gfbgraph_node_get_connection_nodes_async_finish (GFBGraphNode *node, GAsyncResult *result, GError **error)

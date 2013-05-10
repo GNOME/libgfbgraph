@@ -70,7 +70,7 @@ get_connections (GFBGraphConnectableInterface *iface)
  * Get the params to be inserted in a request to the Facebook Graph API
  * in order to append the node @self to a node of type @node_type.
  *
- * Returns: A string based #GHashTable with the params and his values or %NULL.
+ * Returns: (transfer full): A string based #GHashTable with the params and his values or %NULL.
  **/
 GHashTable*
 gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GType node_type)
@@ -96,7 +96,7 @@ gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GTyp
  * Parse the response contained in @payload when a gfbgraph_node_get_connection_nodes() was
  * executed.
  *
- * Returns: a #GList of #GFBGraphNode created from the @payload or %NULL.
+ * Returns: (transfer full): a #GList of #GFBGraphNode created from the @payload or %NULL.
  **/
 GList*
 gfbgraph_connectable_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)
@@ -146,7 +146,7 @@ gfbgraph_connectable_is_connectable_to (GFBGraphConnectable *self, GType node_ty
  * Get the Facebook Graph API function path to retrieve the nodes connected with @node_type
  * managed by the #GFBGraphConnectable object.
  *
- * Returns: a const #gchar with the function path or %NULL.
+ * Returns: (transfer none): a const #gchar with the function path or %NULL.
  **/
 const gchar*
 gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_type)
@@ -177,7 +177,7 @@ gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_
  * Normally, Facebook Graph API returns the connections in the same way, using JSON objects,
  * with a root object called "data".
  *
- * Returns: a #GList of #GFBGraphNode with the same #GType as @self.
+ * Returns: (transfer full): a #GList of #GFBGraphNode with the same #GType as @self.
  **/
 GList*
 gfbgraph_connectable_default_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)

@@ -91,7 +91,7 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 	g_type_class_add_private (gobject_class, sizeof(GFBGraphUserPrivate));
 
         /**
-         * GFBGraphUser:name
+         * GFBGraphUser:name:
          *
          * The full name of the user
          **/
@@ -210,7 +210,7 @@ gfbgraph_user_new (void)
  *
  * Retrieves a user from the Facebook Graph with the give ID.
  *
- * Returns: a new #GFBGraphUser; unref with g_object_unref()
+ * Returns: (transfer full): a new #GFBGraphUser; unref with g_object_unref()
  **/
 GFBGraphUser*
 gfbgraph_user_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error)
@@ -226,7 +226,7 @@ gfbgraph_user_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GErr
  * Retrieve the current user logged using the https://graph.facebook.com/me Graph API function.
  * See gfbgraph_user_get_my_async() for the asynchronous version of this call.
  *
- * Returns: a #GFBGraphUser with the current user information.
+ * Returns: (transfer full): a #GFBGraphUser with the current user information.
  **/
 GFBGraphUser*
 gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
@@ -306,7 +306,7 @@ gfbgraph_user_get_me_async (GFBGraphAuthorizer *authorizer, GCancellable *cancel
  * Finishes an asynchronous operation started with 
  * gfbgraph_user_get_me_async().
  *
- * Returns: a #GFBGraphUser for to the current user logged.
+ * Returns: (transfer full): a #GFBGraphUser for to the current user logged.
  **/
 GFBGraphUser*
 gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer *authorizer, GAsyncResult *result, GError **error)
@@ -334,7 +334,7 @@ gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer *authorizer, GAsyncResult 
  *
  * Retrieve the albums nodes owned by the @user. This functions call the function ID/albums.
  *
- * Returns: a #GList with the albums nodes (#GFBGraphAlbums) owned by the given user.
+ * Returns: (transfer full): a #GList with the albums nodes (#GFBGraphAlbums) owned by the given user.
  **/
 GList*
 gfbgraph_user_get_albums (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GError **error)
@@ -393,7 +393,7 @@ gfbgraph_user_get_albums_async (GFBGraphUser *user, GFBGraphAuthorizer *authoriz
  * Finishes an asynchronous operation started with 
  * gfbgraph_user_get_albums_async().
  *
- * Returns: a #GList of #GFBGraphAlbums owned by the @user.
+ * Returns: (transfer full): a #GList of #GFBGraphAlbums owned by the @user.
  **/
 GList*
 gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result, GError **error)

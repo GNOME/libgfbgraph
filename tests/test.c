@@ -1,5 +1,6 @@
 #include <gfbgraph/gfbgraph.h>
-#include "gfbgraph-simple-authorizer.h"
+#include <gfbgraph/gfbgraph-simple-authorizer.h>
+#include "credentials.h"
 
 int
 main (int argc, char **argv)
@@ -12,7 +13,7 @@ main (int argc, char **argv)
 
         g_type_init ();
 
-        authorizer = gfbgraph_simple_authorizer_new ();
+        authorizer = gfbgraph_simple_authorizer_new (GFBGRAPH_TEST_ACCESS_TOKEN);
 
         /* Get "me" user */
         me = gfbgraph_user_get_me (GFBGRAPH_AUTHORIZER (authorizer), &error);

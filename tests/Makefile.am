@@ -1,6 +1,6 @@
 TESTS = gtestutils test test-async
 
-COMMON_SRC = credentials.h gfbgraph-simple-authorizer.h gfbgraph-simple-authorizer.c
+COMMON_SRC = credentials.h
 
 AM_CPPFLAGS = -I$(top_srcdir) $(LIBGFBGRAPH_CFLAGS)
 AM_LDFLAGS = $(top_srcdir)/gfbgraph/libgfbgraph-@API_VERSION@.la $(LIBGFBGRAPH_LIBS)
