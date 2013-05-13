@@ -90,7 +90,7 @@ gfbgraph_simple_authorizer_class_init (GFBGraphSimpleAuthorizerClass *klass)
          **/
         g_object_class_install_property (gobject_class,
                                          PROP_ACCESS_TOKEN,
-                                         g_param_spec_string ("access_token",
+                                         g_param_spec_string ("access-token",
                                                               "The access token", "The access token for the Facebook Graph API.",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
@@ -196,5 +196,5 @@ gfbgraph_simple_authorizer_refresh_authorization (GFBGraphAuthorizer *iface, GCa
 GFBGraphSimpleAuthorizer*
 gfbgraph_simple_authorizer_new (const gchar *access_token)
 {
-        return GFBGRAPH_SIMPLE_AUTHORIZER (g_object_new (GFBGRAPH_TYPE_SIMPLE_AUTHORIZER, "access_token", access_token));
+        return GFBGRAPH_SIMPLE_AUTHORIZER (g_object_new (GFBGRAPH_TYPE_SIMPLE_AUTHORIZER, "access-token", access_token, NULL));
 }

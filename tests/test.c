@@ -18,7 +18,7 @@ main (int argc, char **argv)
         /* Get "me" user */
         me = gfbgraph_user_get_me (GFBGRAPH_AUTHORIZER (authorizer), &error);
         if (error != NULL) {
-                g_print ("Error getting \"me\" user\n");
+                g_print ("Error getting \"me\" user: %s\n", error->message);
                 return -1;
         }
         g_object_get (G_OBJECT (me), "name", &me_name, NULL);
