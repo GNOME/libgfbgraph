@@ -43,12 +43,16 @@ enum
 {
         PROP_0,
 
-        PROP_ID
+        PROP_ID,
+        PROP_LINK,
+        PROP_CREATEDTIME
 };
 
 struct _GFBGraphNodePrivate {
         GList *connections;
         gchar *id;
+        gchar *link;
+        gchar *created_time;
 };
 
 typedef struct {
@@ -102,6 +106,30 @@ gfbgraph_node_class_init (GFBGraphNodeClass *klass)
                                                               "The Facebook node ID", "Every node in the Facebook Graph is identified by his ID",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphNode:link:
+         *
+         * The node link. An URL to the node on Facebook.
+         **/
+        g_object_class_install_property (gobject_class,
+                                         PROP_LINK,
+                                         g_param_spec_string ("link",
+                                                              "The link to the node", "A link (url) to the node on Facebook",
+                                                              "",
+                                                              G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphNode:created_time:
+         *
+         * The time the node was initially published. Is an ISO 8601 encoded date.
+         **/
+        g_object_class_install_property (gobject_class,
+                                         PROP_LINK,
+                                         g_param_spec_string ("created_time",
+                                                              "The node creation time", "An ISO 8601 encoded date when the node was initially published",
+                                                              "",
+                                                              G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 static void
@@ -119,6 +147,8 @@ gfbgraph_node_finalize (GObject *object)
 
         if (priv->id)
                 g_free (priv->id);
+        if (priv->link)
+                g_free (priv->link);
 
         G_OBJECT_CLASS(parent_class)->finalize (object);
 }
@@ -136,6 +166,16 @@ gfbgraph_node_set_property (GObject *object, guint prop_id, const GValue *value,
                                 g_free (priv->id);
                         priv->id = g_strdup (g_value_get_string (value));
                         break;
+                case PROP_LINK:
+                        if (priv->link)
+                                g_free (priv->link);
+                        priv->link = g_strdup (g_value_get_string (value));
+                        break;
+                case PROP_CREATEDTIME:
+                        if (priv->created_time)
+                                g_free (priv->created_time);
+                        priv->created_time = g_strdup (g_value_get_string (value));
+                        break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                         break;
@@ -152,6 +192,12 @@ gfbgraph_node_get_property (GObject *object, guint prop_id, GValue *value, GPara
         switch (prop_id) {
                 case PROP_ID:
                         g_value_set_string (value, priv->id);
+                        break;
+                case PROP_LINK:
+                        g_value_set_string (value, priv->link);
+                        break;
+                case PROP_CREATEDTIME:
+                        g_value_set_string (value, priv->created_time);
                         break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
