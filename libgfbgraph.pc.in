@@ -6,9 +6,9 @@ datadir=@datadir@
 includedir=@includedir@
 apiversion=@API_VERSION@
 
-Name: libginstapaper
-Description: GObject Instapaper library
+Name: libgfbgraph
+Description: GObject library for Facebook Graph API
 Version: @VERSION@
-Requires: rest-0.7 glib-2.0
-Libs: -L${libdir} -llibginstapaper-${apiversion}
-Cflags: -I${includedir}
+Requires: gio-2.0 glib-2.0 goa-1.0 json-glib-1.0 libsoup-2.4 rest-0.7
+Libs: -L${libdir} -llibgfbgraph-${apiversion}
+Cflags: -I${includedir}/gfbgraph-@API_VERSION@
