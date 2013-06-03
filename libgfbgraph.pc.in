@@ -10,5 +10,5 @@ Name: libgfbgraph
 Description: GObject library for Facebook Graph API
 Version: @VERSION@
 Requires: gio-2.0 glib-2.0 goa-1.0 json-glib-1.0 libsoup-2.4 rest-0.7
-Libs: -L${libdir} -llibgfbgraph-${apiversion}
+Libs: -L${libdir} -lgfbgraph-${apiversion}
 Cflags: -I${includedir}/gfbgraph-@API_VERSION@
