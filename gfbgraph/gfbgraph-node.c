@@ -149,6 +149,8 @@ gfbgraph_node_finalize (GObject *object)
                 g_free (priv->id);
         if (priv->link)
                 g_free (priv->link);
+        if (priv->created_time)
+                g_free (priv->created_time);
 
         G_OBJECT_CLASS(parent_class)->finalize (object);
 }
