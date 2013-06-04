@@ -288,6 +288,54 @@ gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GTyp
 }
 
 /**
+ * gfbgraph_node_get_id:
+ * @node: a #GFBGraphNode.
+ *
+ * Gets the Facebook Graph unique node ID.
+ *
+ * Returns: (transfer none): the node ID.
+ **/
+const gchar*
+gfbgraph_node_get_id (GFBGraphNode *node)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
+
+        return g_strdup (node->priv->id);
+}
+
+/**
+ * gfbgraph_node_get_url:
+ * @node: a #GFBGraphNode.
+ *
+ * Gets the node link to the Facebook web page.
+ *
+ * Returns: (transfer none): the URL.
+ **/
+const gchar*
+gfbgraph_node_get_link (GFBGraphNode *node)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
+
+        return g_strdup (node->priv->link);
+}
+
+/**
+ * gfbgraph_node_get_created_time:
+ * @node: a #GFBGraphNode.
+ *
+ * Gets a node created time.
+ *
+ * Returns: (transfer none): an ISO 8601 encoded date when the node was initially published.
+ **/
+const gchar*
+gfbgraph_node_get_created_time (GFBGraphNode *node)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
+
+        return g_strdup (node->priv->created_time);
+}
+
+/**
  * gfbgraph_node_get_connection_nodes:
  * @node: a #GFBGraphNode object which retrieve the connected nodes.
  * @node_type: a #GFBGraphNode type #GType that determines the kind of nodes to retrieve.
@@ -434,6 +482,8 @@ gfbgraph_node_get_connection_nodes_async_finish (GFBGraphNode *node, GAsyncResul
  *
  * Appends @connect_node to @node. @connect_node must implement the #GFBGraphConnectable interface
  * and be connectable to @node GType.
+ *
+ * Returns: TRUE on sucess, FALSE if an error ocurred.
  **/
 gboolean
 gfbgraph_node_append_connection (GFBGraphNode *node, GFBGraphNode *connect_node, GFBGraphAuthorizer *authorizer, GError **error)
