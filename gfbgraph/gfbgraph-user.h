@@ -61,6 +61,8 @@ GList*        gfbgraph_user_get_albums              (GFBGraphUser *user, GFBGrap
 void          gfbgraph_user_get_albums_async        (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 GList*        gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result, GError **error);
 
+const gchar*  gfbgraph_user_get_name (GFBGraphUser *user);
+
 G_END_DECLS
 
 #endif /* __GFBGRAPH_USER_H__ */

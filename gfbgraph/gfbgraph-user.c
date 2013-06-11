@@ -413,3 +413,19 @@ gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result,
         data = (GFBGraphUserConnectionAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
         return data->nodes;
 }
+
+/**
+ * gfbgraph_user_get_name:
+ * @user: a #GFBGraphUser.
+ *
+ * Get the user full name.
+ *
+ * Returns: (transfer none): a const #gchar with the user full name, or %NULL.
+ **/
+const gchar*
+gfbgraph_user_get_name (GFBGraphUser *user)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_USER (user), NULL);
+
+        return user->priv->name;
+}

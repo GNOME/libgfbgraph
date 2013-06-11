@@ -302,3 +302,59 @@ gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *
 
         return stream;
 }
+
+/**
+ * gfbgraph_photo_get_name:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): the @photo name, which is the comment given by the user so it would by larger, or %NULL.
+ **/
+const gchar*
+gfbgraph_photo_get_name (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        return photo->priv->name;
+}
+
+/**
+ * gfbgraph_photo_get_source_uri:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): the image link with a maximun widht or height of 720px
+ **/
+const gchar*
+gfbgraph_photo_get_default_source_uri (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        return photo->priv->source;
+}
+
+/**
+ * gfbgraph_pohto_get_default_width:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): the default photo width, up to 720px.
+ **/
+guint
+gfbgraph_photo_get_default_width (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), -1);
+
+        return photo->priv->width;
+}
+
+/**
+ * gfbgraph_pohto_get_default_height:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): the default photo height, up to 720px.
+ **/
+guint
+gfbgraph_photo_get_default_height (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), -1);
+
+        return photo->priv->height;
+}

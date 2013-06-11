@@ -257,3 +257,59 @@ gfbgraph_album_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GEr
 {
         return GFBGRAPH_ALBUM (gfbgraph_node_new_from_id (authorizer, id, GFBGRAPH_TYPE_ALBUM, error));
 }
+
+/**
+ * gfbgraph_album_get_name:
+ * @album: a #GFBGraphAlbum.
+ *
+ * Returns: (transfer none): the @album name, or %NULL.
+ **/
+const gchar*
+gfbgraph_album_get_name (GFBGraphAlbum *album)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_ALBUM (album), NULL);
+
+        return album->priv->name;
+}
+
+/**
+ * gfbgraph_album_get_description:
+ * @album: a #GFBGraphAlbum.
+ *
+ * Returns: (transfer none): the @album description, or %NULL.
+ **/
+const gchar*
+gfbgraph_album_get_description (GFBGraphAlbum *album)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_ALBUM (album), NULL);
+
+        return album->priv->description;
+}
+
+/**
+ * gfbgraph_album_get_cover_photo:
+ * @album: a #GFBGraphAlbum.
+ *
+ * Returns: (transfer none): the cover photo node ID or %NULL.
+ **/
+const gchar*
+gfbgraph_album_get_cover_photo_id (GFBGraphAlbum *album)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_ALBUM (album), NULL);
+
+        return album->priv->cover_photo;
+}
+
+/**
+ * gfbgraph_album_get_count:
+ * @album: a #GFBGraphAlbum.
+ *
+ * Returns: (transfer none): the number of photos into the @album or -1 in case of error.
+ **/
+guint
+gfbgraph_album_get_count (GFBGraphAlbum *album)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_ALBUM (album), -1);
+
+        return album->priv->count;
+}

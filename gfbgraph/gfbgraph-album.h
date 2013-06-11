@@ -51,6 +51,11 @@ GType          gfbgraph_album_get_type    (void) G_GNUC_CONST;
 GFBGraphAlbum* gfbgraph_album_new         (void);
 GFBGraphAlbum* gfbgraph_album_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error);
 
+const gchar*   gfbgraph_album_get_name           (GFBGraphAlbum *album);
+const gchar*   gfbgraph_album_get_description    (GFBGraphAlbum *album);
+const gchar*   gfbgraph_album_get_cover_photo_id (GFBGraphAlbum *album);
+guint          gfbgraph_album_get_count          (GFBGraphAlbum *album);
+
 G_END_DECLS
 
 #endif /* __GFBGRAPH_ALBUM_H__ */

@@ -52,6 +52,11 @@ GFBGraphPhoto* gfbgraph_photo_new      (void);
 GFBGraphPhoto* gfbgraph_photo_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GError **error);
 GInputStream*  gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *authorizer, GError **error);
 
+const gchar*   gfbgraph_photo_get_name               (GFBGraphPhoto *photo);
+const gchar*   gfbgraph_photo_get_default_source_uri (GFBGraphPhoto *photo);
+guint          gfbgraph_photo_get_default_width      (GFBGraphPhoto *photo);
+guint          gfbgraph_photo_get_default_height     (GFBGraphPhoto *photo);
+
 G_END_DECLS
 
 #endif /* __GFBGRAPH_PHOTO_H__ */
