@@ -368,7 +368,7 @@ gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGrap
         if (GFBGRAPH_IS_CONNECTABLE (connected_node) == FALSE) {
                 g_set_error (error, GFBGRAPH_NODE_ERROR,
                              GFBGRAPH_NODE_ERROR_NO_CONNECTABLE,
-                             "The given node type (%s) don't implement connetionable interface", g_type_name (node_type));
+                             "The given node type (%s) doesn't implement connectable interface", g_type_name (node_type));
                 return NULL;
         }
 
