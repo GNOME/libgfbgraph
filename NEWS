@@ -1,0 +1,14 @@
+===============
+LibGFBGraph 0.1
+===============
+
+This is the first release of GFBGraph library.
+
+With this library you can get:
+
+        * a user node, knowing his node ID,
+        * the "me" user node.
+        * all albums owned by a user.
+        * all the photos in an album, and download the image default size.
+
+This version has a poor documentation and comes with a non-tested introspection.
