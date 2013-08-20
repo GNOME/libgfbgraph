@@ -1,7 +1,8 @@
 m4_define([api_major], [0])
-m4_define([api_minor], [3])
+m4_define([api_minor], [2])
+m4_define([api_micro], [1])
 
-m4_define([gfbgraph_version], [api_major.api_minor])
+m4_define([gfbgraph_version], [api_major.api_minor.api_micro])
 
 AC_PREREQ([2.63])
 AC_INIT([gfbgraph], [gfbgraph_version],
