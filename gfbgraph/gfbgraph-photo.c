@@ -287,7 +287,6 @@ gfbgraph_photo_download_default_size (GFBGraphPhoto *photo, GFBGraphAuthorizer *
         request = soup_requester_request (requester, priv->source, error);
         if (request != NULL) {
                 message = soup_request_http_get_message (SOUP_REQUEST_HTTP (request));
-                gfbgraph_authorizer_process_message (authorizer, message);
 
                 stream = soup_request_send (request, NULL, error);
                 if (stream != NULL) {
