@@ -480,7 +480,7 @@ gfbgraph_photo_get_default_source_uri (GFBGraphPhoto *photo)
 guint
 gfbgraph_photo_get_default_width (GFBGraphPhoto *photo)
 {
-        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), -1);
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), 0);
 
         return photo->priv->width;
 }
@@ -494,7 +494,7 @@ gfbgraph_photo_get_default_width (GFBGraphPhoto *photo)
 guint
 gfbgraph_photo_get_default_height (GFBGraphPhoto *photo)
 {
-        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), -1);
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), 0);
 
         return photo->priv->height;
 }
