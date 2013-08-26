@@ -65,6 +65,7 @@ const gchar*        gfbgraph_photo_get_default_source_uri (GFBGraphPhoto *photo)
 guint               gfbgraph_photo_get_default_width      (GFBGraphPhoto *photo);
 guint               gfbgraph_photo_get_default_height     (GFBGraphPhoto *photo);
 GList*              gfbgraph_photo_get_images             (GFBGraphPhoto *photo);
+GFBGraphPhotoImage* gfbgraph_photo_get_image_hires        (GFBGraphPhoto *photo);
 
 G_END_DECLS
 

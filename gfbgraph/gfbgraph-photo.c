@@ -52,6 +52,7 @@ struct _GFBGraphPhotoPrivate {
         guint               width;
         guint               height;
         GList              *images;
+        GFBGraphPhotoImage *hires_image;
 };
 
 static void gfbgraph_photo_init         (GFBGraphPhoto *obj);
@@ -511,5 +512,37 @@ gfbgraph_photo_get_images (GFBGraphPhoto *photo)
         g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
 
         return photo->priv->images;
+}
+
+/**
+ * gfbgraph_photo_get_image_hires:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): a #GFBGraphPhotoImage with the higher resolution available of the photo
+ **/
+GFBGraphPhotoImage*
+gfbgraph_photo_get_image_hires (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        if (photo->priv->hires_image == NULL) {
+                GList *images_list;
+                guint bigger_width;
+                GFBGraphPhotoImage *photo_image;
+
+                bigger_width = 0;
+                images_list = photo->priv->images;
+                while (images_list) {
+                        photo_image = (GFBGraphPhotoImage *) images_list->data;
+                        if (photo_image->width > bigger_width) {
+                                photo->priv->hires_image = photo_image;
+                                bigger_width = photo_image->width;
+                        }
+
+                        images_list = g_list_next (images_list);
+                }
+        }
+
+        return photo->priv->hires_image;
 }
 
