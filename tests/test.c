@@ -10,6 +10,11 @@ main (int argc, char **argv)
         gchar *me_name;
         GError *error = NULL;
         GList *albums;
+        GFBGraphPhoto *photo;
+        GInputStream *in_stream;
+        GOutputStream *out_stream;
+        GFile *out_file;
+        GFBGraphPhotoImage *smaller;
 
         g_type_init ();
 
@@ -46,6 +51,36 @@ main (int argc, char **argv)
                 albums = g_list_next (albums);
         }
 
+        photo = gfbgraph_photo_new_from_id (GFBGRAPH_AUTHORIZER (authorizer), "553619791342827", &error);
+        if (error != NULL) {
+                g_print ("Error getting photo\n");
+                return -1;
+        }
+
+        smaller = gfbgraph_photo_get_image_near_width (photo, 1);
+        if (smaller == NULL)
+                g_error ("Can't get the smaller image\n");
+        else
+                g_print ("%dx%d %s", smaller->width, smaller->height, smaller->source);
+
+        in_stream = gfbgraph_photo_download_default_size (photo, GFBGRAPH_AUTHORIZER (authorizer), NULL);
+        out_file = g_file_new_for_path ("/tmp/facebook.jpeg");
+        out_stream = G_OUTPUT_STREAM (g_file_create (out_file, G_FILE_CREATE_PRIVATE, NULL, &error));
+        if (error != NULL) {
+                g_print ("Error creating temp file\n");
+                return -1;
+        }
+
+        g_output_stream_splice (G_OUTPUT_STREAM (out_stream), in_stream,
+                              G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+                              NULL, &error);
+        if (error != NULL) {
+                g_print ("Error splicing streams\n");
+                return -1;
+        }
+
+        g_list_free_full (albums, g_object_unref);
+        g_clear_object (&me);
         g_clear_object (&authorizer);
 
         return 0;
