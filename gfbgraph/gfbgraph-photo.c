@@ -30,6 +30,7 @@
 #include "gfbgraph-connectable.h"
 #include "gfbgraph-album.h"
 
+#include <json-glib/json-glib.h>
 #include <libsoup/soup.h>
 #include <libsoup/soup-request.h>
 #include <libsoup/soup-request-http.h>
@@ -41,14 +42,16 @@ enum {
         PROP_NAME,
         PROP_SOURCE,
         PROP_HEIGHT,
-        PROP_WIDTH
+        PROP_WIDTH,
+        PROP_IMAGES
 };
 
 struct _GFBGraphPhotoPrivate {
-        gchar *name;
-        gchar *source;
-        guint  width;
-        guint  height;
+        gchar              *name;
+        gchar              *source;
+        guint               width;
+        guint               height;
+        GList              *images;
 };
 
 static void gfbgraph_photo_init         (GFBGraphPhoto *obj);
@@ -60,17 +63,28 @@ static void gfbgraph_photo_get_property (GObject *object, guint prop_id, GValue 
 static void gfbgraph_photo_connectable_iface_init     (GFBGraphConnectableInterface *iface);
 GHashTable* gfbgraph_photo_get_connection_post_params (GFBGraphConnectable *self, GType node_type);
 
+static void  gfbgraph_photo_serializable_iface_init           (JsonSerializableIface *iface);
+JsonNode    *gfbgraph_photo_serializable_serialize_property   (JsonSerializable *serializable, const gchar *property_name, const GValue *value, GParamSpec *pspec);
+gboolean     gfbgraph_photo_serializable_deserialize_property (JsonSerializable *serializable, const gchar *property_name, GValue *value, GParamSpec *pspec, JsonNode *property_node);
+GParamSpec  *gfbgraph_photo_serializable_find_property        (JsonSerializable *serializable, const char *name);
+GParamSpec **gfbgraph_photo_serializable_list_properties      (JsonSerializable *serializable, guint *n_pspecs);
+void         gfbgraph_photo_serializable_set_property         (JsonSerializable *serializable, GParamSpec *pspec, const GValue *value);
+void         gfbgraph_photo_serializable_get_property         (JsonSerializable *serializable, GParamSpec *pspec, GValue *value);
+
 #define GFBGRAPH_PHOTO_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), GFBGRAPH_TYPE_PHOTO, GFBGraphPhotoPrivate))
 
 static GFBGraphNodeClass *parent_class = NULL;
 
 G_DEFINE_TYPE_WITH_CODE (GFBGraphPhoto, gfbgraph_photo, GFBGRAPH_TYPE_NODE,
-                         G_IMPLEMENT_INTERFACE (GFBGRAPH_TYPE_CONNECTABLE, gfbgraph_photo_connectable_iface_init));
+                         G_IMPLEMENT_INTERFACE (GFBGRAPH_TYPE_CONNECTABLE, gfbgraph_photo_connectable_iface_init);
+                         G_IMPLEMENT_INTERFACE (JSON_TYPE_SERIALIZABLE, gfbgraph_photo_serializable_iface_init););
 
 static void
 gfbgraph_photo_init (GFBGraphPhoto *obj)
 {
         obj->priv = GFBGRAPH_PHOTO_GET_PRIVATE(obj);
+
+        obj->priv->images = NULL;
 }
 
 static void
@@ -132,11 +146,40 @@ gfbgraph_photo_class_init (GFBGraphPhotoClass *klass)
                                                             "Photo height", "The photo height",
                                                             0, G_MAXUINT, 0,
                                                             G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphPhoto:images:
+         *
+         * A list with the available representations of the photo, in differents sizes
+         **/
+        g_object_class_install_property (gobject_class,
+                                         PROP_IMAGES,
+                                         g_param_spec_pointer ("images",
+                                                               "Sizes of the photo", "The diffents sizes available of the photo",
+                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 static void
 gfbgraph_photo_finalize (GObject *obj)
 {
+        GFBGraphPhotoPrivate *priv;
+        GList *images;
+        GFBGraphPhotoImage *photo_image;
+
+        priv = GFBGRAPH_PHOTO_GET_PRIVATE (obj);
+
+        images = priv->images;
+        while (images) {
+                photo_image = (GFBGraphPhotoImage *) images->data;
+
+                g_free (photo_image->source);
+                g_free (photo_image);
+
+                images = g_list_next (images);
+        }
+
+        g_list_free (priv->images);
+
         G_OBJECT_CLASS(parent_class)->finalize (obj);
 }
 
@@ -164,6 +207,10 @@ gfbgraph_photo_set_property (GObject *object, guint prop_id, const GValue *value
                 case PROP_HEIGHT:
                         priv->height = g_value_get_uint (value);
                         break;
+                case PROP_IMAGES:
+                        /* TODO: Free GList memory with g_list_free_full */
+                        priv->images = g_value_get_pointer (value);
+                        break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                         break;
@@ -190,6 +237,8 @@ gfbgraph_photo_get_property (GObject *object, guint prop_id, GValue *value, GPar
                 case PROP_HEIGHT:
                         g_value_set_uint (value, priv->height);
                         break;
+                case PROP_IMAGES:
+                        g_value_set_pointer (value, priv->images);
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                         break;
@@ -222,6 +271,96 @@ gfbgraph_photo_get_connection_post_params (GFBGraphConnectable *self, GType node
         /* TODO: Incorpate the "source" param (multipart/form-data) */
 
         return params;
+}
+
+static void
+gfbgraph_photo_serializable_iface_init (JsonSerializableIface *iface)
+{
+        iface->serialize_property   = gfbgraph_photo_serializable_serialize_property;
+        iface->deserialize_property = gfbgraph_photo_serializable_deserialize_property;
+        iface->find_property        = gfbgraph_photo_serializable_find_property;
+        iface->list_properties      = gfbgraph_photo_serializable_list_properties;
+        iface->set_property         = gfbgraph_photo_serializable_set_property;
+        iface->get_property         = gfbgraph_photo_serializable_get_property;
+}
+
+JsonNode *
+gfbgraph_photo_serializable_serialize_property (JsonSerializable *serializable, const gchar *property_name, const GValue *value, GParamSpec *pspec)
+{
+        JsonNode *node = NULL;
+
+        g_print ("Serializing %s\n", property_name);
+
+        if (g_strcmp0 ("images", property_name) == 0) {
+        } else {
+                node = json_serializable_default_serialize_property (serializable, property_name, value, pspec);
+        }
+
+        return node;
+}
+
+gboolean
+gfbgraph_photo_serializable_deserialize_property (JsonSerializable *serializable, const gchar *property_name, GValue *value, GParamSpec *pspec, JsonNode *property_node)
+{
+        gboolean res;
+
+        if (g_strcmp0 ("images", property_name) == 0) {
+                if (JSON_NODE_HOLDS_ARRAY (property_node)) {
+                        guint i, num_images;
+                        JsonArray *jarray;
+                        GList *images;
+
+                        images = NULL;
+                        jarray = json_node_get_array (property_node);
+                        num_images = json_array_get_length (jarray);
+                        for (i = 0; i < num_images; i++) {
+                                JsonObject *image_object;
+                                GFBGraphPhotoImage *photo_image;
+
+                                image_object = json_array_get_object_element (jarray, i);
+                                photo_image = g_new0 (GFBGraphPhotoImage, 1);
+                                photo_image->width = json_object_get_int_member (image_object, "width");
+                                photo_image->height = json_object_get_int_member (image_object, "height");
+                                photo_image->source = g_strdup (json_object_get_string_member (image_object, "source"));
+
+                                images = g_list_append (images, photo_image);
+                        }
+
+                        g_value_set_pointer (value, (gpointer *) images);
+                        res = TRUE;
+                } else {
+                        g_warning ("The 'images' node retrieved from the Facebook Graph API isn't an array, it's holding a %s\n", json_node_type_name (property_node));
+                        res = FALSE;
+                }
+        } else {
+                res = json_serializable_default_deserialize_property (serializable, property_name, value, pspec, property_node);
+        }
+
+        return res;
+}
+
+GParamSpec*
+gfbgraph_photo_serializable_find_property (JsonSerializable *serializable, const char *name)
+{
+        return g_object_class_find_property (G_OBJECT_GET_CLASS (GFBGRAPH_PHOTO (serializable)), name);
+}
+
+GParamSpec**
+gfbgraph_photo_serializable_list_properties (JsonSerializable *serializable, guint *n_pspecs)
+{
+        return g_object_class_list_properties (G_OBJECT_GET_CLASS (GFBGRAPH_PHOTO (serializable)), n_pspecs);
+}
+
+void
+gfbgraph_photo_serializable_set_property (JsonSerializable *serializable, GParamSpec *pspec, const GValue *value)
+{
+        g_object_set_property (G_OBJECT (serializable), g_param_spec_get_name (pspec), value);
+}
+
+void
+gfbgraph_photo_serializable_get_property (JsonSerializable *serializable, GParamSpec *pspec, GValue *value)
+{
+        g_object_get_property (G_OBJECT (serializable), g_param_spec_get_name (pspec), value);
 }
 
 /**
@@ -357,3 +496,18 @@ gfbgraph_photo_get_default_height (GFBGraphPhoto *photo)
 
         return photo->priv->height;
 }
+
+/**
+ * gfbgraph_photo_get_images:
+ * @photo: a #GFBGraphPhoto.
+ *
+ * Returns: (transfer none): a #GList of #GFBGraphPhotoImage with the available photo sizes
+ **/
+GList*
+gfbgraph_photo_get_images (GFBGraphPhoto *photo)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        return photo->priv->images;
+}
+
