@@ -66,6 +66,8 @@ guint               gfbgraph_photo_get_default_width      (GFBGraphPhoto *photo)
 guint               gfbgraph_photo_get_default_height     (GFBGraphPhoto *photo);
 GList*              gfbgraph_photo_get_images             (GFBGraphPhoto *photo);
 GFBGraphPhotoImage* gfbgraph_photo_get_image_hires        (GFBGraphPhoto *photo);
+GFBGraphPhotoImage* gfbgraph_photo_get_image_near_width   (GFBGraphPhoto *photo, guint width);
+GFBGraphPhotoImage* gfbgraph_photo_get_image_near_height  (GFBGraphPhoto *photo, guint height);
 
 G_END_DECLS
 

@@ -546,3 +546,60 @@ gfbgraph_photo_get_image_hires (GFBGraphPhoto *photo)
         return photo->priv->hires_image;
 }
 
+GFBGraphPhotoImage*
+gfbgraph_photo_get_image_near_width (GFBGraphPhoto *photo, guint width)
+{
+        GList *images_list;
+        GFBGraphPhotoImage *tmp_photo_image;
+        GFBGraphPhotoImage *photo_image;
+        gint tmp_w_dif, w_dif;
+
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        photo_image = NULL;
+        images_list = photo->priv->images;
+        while (images_list) {
+                tmp_photo_image = (GFBGraphPhotoImage *) images_list->data;
+                tmp_w_dif = tmp_photo_image->width - width;
+                tmp_w_dif = (tmp_w_dif > 0) ? tmp_w_dif : (tmp_w_dif * -1);
+
+                if (photo_image == NULL
+                    || tmp_w_dif < w_dif) {
+                        w_dif = tmp_w_dif;
+                        photo_image = tmp_photo_image;
+                } else {
+                }
+
+                images_list = g_list_next (images_list);
+        }
+
+        return photo_image;
+}
+
+GFBGraphPhotoImage*
+gfbgraph_photo_get_image_near_height (GFBGraphPhoto *photo, guint height)
+{
+        GList *images_list;
+        GFBGraphPhotoImage *tmp_photo_image;
+        GFBGraphPhotoImage *photo_image;
+        gint tmp_h_dif, h_dif;
+
+        g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
+
+        photo_image = NULL;
+        images_list = photo->priv->images;
+        while (images_list) {
+                tmp_photo_image = (GFBGraphPhotoImage *) images_list->data;
+                tmp_h_dif = ABS(tmp_photo_image->height - height);
+
+                if (photo_image == NULL
+                    || tmp_h_dif < h_dif) {
+                        h_dif = tmp_h_dif;
+                        photo_image = tmp_photo_image;
+                }
+
+                images_list = g_list_next (images_list);
+        }
+
+        return photo_image;
+}
