@@ -178,6 +178,8 @@ gfbgraph_photo_finalize (GObject *obj)
                 images = g_list_next (images);
         }
 
+        g_free (priv->name);
+        g_free (priv->source);
         g_list_free (priv->images);
 
         G_OBJECT_CLASS(parent_class)->finalize (obj);
