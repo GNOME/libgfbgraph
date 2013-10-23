@@ -85,7 +85,7 @@ me_async_cb (GFBGraphAuthorizer *authorizer, GAsyncResult *res, gpointer user_da
 
         me = gfbgraph_user_get_me_async_finish (authorizer, res, &error);
         if (error != NULL) {
-                g_print ("Error: %s\n", error->message);
+                g_print ("Error getting me: %s\n", error->message);
                 g_main_loop_quit (main_loop);
         } else {
                 gchar *me_name;
