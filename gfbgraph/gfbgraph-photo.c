@@ -504,7 +504,7 @@ gfbgraph_photo_get_default_height (GFBGraphPhoto *photo)
  * gfbgraph_photo_get_images:
  * @photo: a #GFBGraphPhoto.
  *
- * Returns: (transfer none): a #GList of #GFBGraphPhotoImage with the available photo sizes
+ * Returns: (element-type GFBGraphPhotoImage) (transfer none): a #GList of #GFBGraphPhotoImage with the available photo sizes
  **/
 GList*
 gfbgraph_photo_get_images (GFBGraphPhoto *photo)
@@ -520,7 +520,7 @@ gfbgraph_photo_get_images (GFBGraphPhoto *photo)
  *
  * Returns: (transfer none): a #GFBGraphPhotoImage with the higher resolution available of the photo
  **/
-GFBGraphPhotoImage*
+const GFBGraphPhotoImage*
 gfbgraph_photo_get_image_hires (GFBGraphPhoto *photo)
 {
         g_return_val_if_fail (GFBGRAPH_IS_PHOTO (photo), NULL);
@@ -546,7 +546,7 @@ gfbgraph_photo_get_image_hires (GFBGraphPhoto *photo)
         return photo->priv->hires_image;
 }
 
-GFBGraphPhotoImage*
+const GFBGraphPhotoImage*
 gfbgraph_photo_get_image_near_width (GFBGraphPhoto *photo, guint width)
 {
         GList *images_list;
@@ -576,7 +576,7 @@ gfbgraph_photo_get_image_near_width (GFBGraphPhoto *photo, guint width)
         return photo_image;
 }
 
-GFBGraphPhotoImage*
+const GFBGraphPhotoImage*
 gfbgraph_photo_get_image_near_height (GFBGraphPhoto *photo, guint height)
 {
         GList *images_list;

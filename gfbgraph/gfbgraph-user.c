@@ -334,7 +334,7 @@ gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer *authorizer, GAsyncResult 
  *
  * Retrieve the albums nodes owned by the @user. This functions call the function ID/albums.
  *
- * Returns: (transfer full): a #GList with the albums nodes (#GFBGraphAlbums) owned by the given user.
+ * Returns: (element-type GFBGraphAlbum) (transfer full): a newly-allocated #GList with the albums nodes owned by the given user.
  **/
 GList*
 gfbgraph_user_get_albums (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GError **error)
@@ -357,7 +357,7 @@ gfbgraph_user_get_albums (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GE
  * synchronous version of this call.
  *
  * When the operation is finished, @callback will be called. You can then call gfbgraph_user_get_albums_async_finish()
- * to get the #GList of #GFBGraphAlbums owned by the @user.
+ * to get the #GList of #GFBGraphAlbum owned by the @user.
  **/
 void
 gfbgraph_user_get_albums_async (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
@@ -393,7 +393,7 @@ gfbgraph_user_get_albums_async (GFBGraphUser *user, GFBGraphAuthorizer *authoriz
  * Finishes an asynchronous operation started with 
  * gfbgraph_user_get_albums_async().
  *
- * Returns: (transfer full): a #GList of #GFBGraphAlbums owned by the @user.
+ * Returns: (element-type GFBGraphAlbum) (transfer full): a newly-allocated #GList of albums owned by the @user.
  **/
 GList*
 gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result, GError **error)

@@ -96,7 +96,7 @@ gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GTyp
  * Parse the response contained in @payload when a gfbgraph_node_get_connection_nodes() was
  * executed.
  *
- * Returns: (transfer full): a #GList of #GFBGraphNode created from the @payload or %NULL.
+ * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of #GFBGraphNode created from the @payload or %NULL.
  **/
 GList*
 gfbgraph_connectable_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)
@@ -177,7 +177,7 @@ gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_
  * Normally, Facebook Graph API returns the connections in the same way, using JSON objects,
  * with a root object called "data".
  *
- * Returns: (transfer full): a #GList of #GFBGraphNode with the same #GType as @self.
+ * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of #GFBGraphNode with the same #GType as @self.
  **/
 GList*
 gfbgraph_connectable_default_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)

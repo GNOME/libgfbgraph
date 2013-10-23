@@ -49,6 +49,11 @@ struct _GFBGraphPhotoClass {
 
 typedef struct _GFBGraphPhotoImage GFBGraphPhotoImage;
 
+/**
+ * GFBGraphPhotoImage:
+ *
+ * An struct with the information of a image.
+ */
 struct _GFBGraphPhotoImage {
         guint  width;
         guint  height;
@@ -65,9 +70,9 @@ const gchar*        gfbgraph_photo_get_default_source_uri (GFBGraphPhoto *photo)
 guint               gfbgraph_photo_get_default_width      (GFBGraphPhoto *photo);
 guint               gfbgraph_photo_get_default_height     (GFBGraphPhoto *photo);
 GList*              gfbgraph_photo_get_images             (GFBGraphPhoto *photo);
-GFBGraphPhotoImage* gfbgraph_photo_get_image_hires        (GFBGraphPhoto *photo);
-GFBGraphPhotoImage* gfbgraph_photo_get_image_near_width   (GFBGraphPhoto *photo, guint width);
-GFBGraphPhotoImage* gfbgraph_photo_get_image_near_height  (GFBGraphPhoto *photo, guint height);
+const GFBGraphPhotoImage* gfbgraph_photo_get_image_hires        (GFBGraphPhoto *photo);
+const GFBGraphPhotoImage* gfbgraph_photo_get_image_near_width   (GFBGraphPhoto *photo, guint width);
+const GFBGraphPhotoImage* gfbgraph_photo_get_image_near_height  (GFBGraphPhoto *photo, guint height);
 
 G_END_DECLS
 

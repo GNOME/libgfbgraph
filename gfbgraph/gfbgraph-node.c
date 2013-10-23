@@ -346,7 +346,7 @@ gfbgraph_node_get_created_time (GFBGraphNode *node)
  * implement the #GFBGraphConnectionable interface and be connectable to @node type object.
  * See gfbgraph_node_get_connection_nodes_async() for the asynchronous version of this call.
  *
- * Returns: (transfer full): a #GList of type @node_type objects with the found nodes.
+ * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of type @node_type objects with the found nodes.
  **/
 GList*
 gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGraphAuthorizer *authorizer, GError **error)
@@ -453,7 +453,7 @@ gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, G
  * Finishes an asynchronous operation started with 
  * gfbgraph_node_get_connection_nodes_async().
  *
- * Returns: (transfer full): a #GList of type #node_type objects with the found nodes.
+ * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of type #node_type objects with the found nodes.
  **/
 GList*
 gfbgraph_node_get_connection_nodes_async_finish (GFBGraphNode *node, GAsyncResult *result, GError **error)
