@@ -46,7 +46,7 @@ struct _GFBGraphNode {
 };
 
 struct _GFBGraphNodeClass {
-	GObjectClass parent_class;
+        GObjectClass parent_class;
 };
 
 typedef enum {

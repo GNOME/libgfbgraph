@@ -251,7 +251,7 @@ gfbgraph_node_new (void)
  * @error: (allow-none): a #GError or %NULL.
  *
  * Retrieve a node object as a #GFBgraphNode of #node_type type, with the given @id from the Facebook Graph.
- * 
+ *
  * Returns: (transfer full): a #GFBGraphNode or %NULL.
  **/
 GFBGraphNode*
@@ -284,7 +284,7 @@ gfbgraph_node_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GTyp
                 g_object_unref (jparser);
         }
 
-        return node;        
+        return node;
 }
 
 /**
@@ -341,7 +341,7 @@ gfbgraph_node_get_created_time (GFBGraphNode *node)
  * @node_type: a #GFBGraphNode type #GType that determines the kind of nodes to retrieve.
  * @authorizer: a #GFBGraphAuthorizer.
  * @error: (allow-none): a #GError or %NULL.
- * 
+ *
  * Retrieve the nodes of type @node_type connected to the @node object. The @node_type object must
  * implement the #GFBGraphConnectionable interface and be connectable to @node type object.
  * See gfbgraph_node_get_connection_nodes_async() for the asynchronous version of this call.
@@ -412,7 +412,7 @@ gfbgraph_node_get_connection_nodes (GFBGraphNode *node, GType node_type, GFBGrap
  * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
  * @user_data: (closure): The data to pass to @callback.
- * 
+ *
  * Asynchronously retrieve the list of nodes of type @node_type connected to the @node object. See
  * gfbgraph_node_get_connection_nodes() for the synchronous version of this call.
  *
@@ -427,7 +427,7 @@ gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, G
 
         g_return_if_fail (GFBGRAPH_IS_NODE (node));
         g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
-	g_return_if_fail (callback != NULL);
+        g_return_if_fail (callback != NULL);
 
         result = g_simple_async_result_new (G_OBJECT (node), callback, user_data, gfbgraph_node_get_connection_nodes_async);
         g_simple_async_result_set_check_cancellable (result, cancellable);
@@ -450,7 +450,7 @@ gfbgraph_node_get_connection_nodes_async (GFBGraphNode *node, GType node_type, G
  * @result: A #GAsyncResult.
  * @error: (allow-none): An optional #GError, or %NULL.
  *
- * Finishes an asynchronous operation started with 
+ * Finishes an asynchronous operation started with
  * gfbgraph_node_get_connection_nodes_async().
  *
  * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of type #node_type objects with the found nodes.

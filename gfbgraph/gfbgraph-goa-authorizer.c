@@ -66,11 +66,11 @@ G_DEFINE_TYPE_WITH_CODE (GFBGraphGoaAuthorizer, gfbgraph_goa_authorizer, G_TYPE_
 static void
 gfbgraph_goa_authorizer_class_init (GFBGraphGoaAuthorizerClass *klass)
 {
-	GObjectClass *gobject_class;
-	gobject_class = (GObjectClass*) klass;
+        GObjectClass *gobject_class;
+        gobject_class = (GObjectClass*) klass;
 
-	parent_class            = g_type_class_peek_parent (klass);
-	gobject_class->finalize = gfbgraph_goa_authorizer_finalize;
+        parent_class            = g_type_class_peek_parent (klass);
+        gobject_class->finalize = gfbgraph_goa_authorizer_finalize;
         gobject_class->get_property = gfbgraph_goa_authorizer_get_property;
         gobject_class->set_property = gfbgraph_goa_authorizer_set_property;
         gobject_class->dispose = gfbgraph_goa_authorizer_dispose;
@@ -89,20 +89,20 @@ gfbgraph_goa_authorizer_class_init (GFBGraphGoaAuthorizerClass *klass)
                                                               GOA_TYPE_OBJECT,
                                                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
-	g_type_class_add_private (gobject_class, sizeof(GFBGraphGoaAuthorizerPrivate));
+        g_type_class_add_private (gobject_class, sizeof(GFBGraphGoaAuthorizerPrivate));
 }
 
 static void
 gfbgraph_goa_authorizer_init (GFBGraphGoaAuthorizer *object)
 {
-	object->priv = GFBGRAPH_GOA_AUTHORIZER_GET_PRIVATE(object);
+        object->priv = GFBGRAPH_GOA_AUTHORIZER_GET_PRIVATE(object);
         g_mutex_init (&object->priv->mutex);
 }
 
 static void
 gfbgraph_goa_authorizer_finalize (GObject *object)
 {
-	G_OBJECT_CLASS(parent_class)->finalize (object);
+        G_OBJECT_CLASS(parent_class)->finalize (object);
 }
 
 static void
@@ -247,5 +247,5 @@ gfbgraph_goa_authorizer_set_goa_object (GFBGraphGoaAuthorizer *self, GoaObject *
 GFBGraphGoaAuthorizer*
 gfbgraph_goa_authorizer_new (GoaObject *goa_object)
 {
-	return GFBGRAPH_GOA_AUTHORIZER (g_object_new (GFBGRAPH_TYPE_GOA_AUTHORIZER, "goa-object", goa_object, NULL));
+        return GFBGRAPH_GOA_AUTHORIZER (g_object_new (GFBGRAPH_TYPE_GOA_AUTHORIZER, "goa-object", goa_object, NULL));
 }

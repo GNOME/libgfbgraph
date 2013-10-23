@@ -42,11 +42,11 @@ struct _GFBGraphUser {
         GFBGraphNode parent;
 
         /*< private >*/
-	GFBGraphUserPrivate *priv;
+        GFBGraphUserPrivate *priv;
 };
 
 struct _GFBGraphUserClass {
-	GFBGraphNodeClass parent_class;
+        GFBGraphNodeClass parent_class;
 };
 
 GType         gfbgraph_user_get_type  (void) G_GNUC_CONST;

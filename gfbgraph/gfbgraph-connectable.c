@@ -25,7 +25,7 @@
  *
  * #GFBGraphConnectable interface allow the connection between nodes.
  * You can see the posible (not necesary implemented) connections in
- * the section "Connections" in any node object in the 
+ * the section "Connections" in any node object in the
  * <ulink url="https://developers.facebook.com/docs/reference/api/">Facebook Graph API documentation</ulink>
  **/
 

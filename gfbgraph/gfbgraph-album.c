@@ -69,21 +69,21 @@ G_DEFINE_TYPE_WITH_CODE (GFBGraphAlbum, gfbgraph_album, GFBGRAPH_TYPE_NODE,
 static void
 gfbgraph_album_init (GFBGraphAlbum *obj)
 {
-	obj->priv = GFBGRAPH_ALBUM_GET_PRIVATE(obj);
+        obj->priv = GFBGRAPH_ALBUM_GET_PRIVATE(obj);
 }
 
 static void
 gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
 {
-	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+        GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-	parent_class            = g_type_class_peek_parent (klass);
+        parent_class            = g_type_class_peek_parent (klass);
 
-	gobject_class->finalize = gfbgraph_album_finalize;
+        gobject_class->finalize = gfbgraph_album_finalize;
         gobject_class->set_property = gfbgraph_album_set_property;
         gobject_class->get_property = gfbgraph_album_get_property;
 
-	g_type_class_add_private (gobject_class, sizeof(GFBGraphAlbumPrivate));
+        g_type_class_add_private (gobject_class, sizeof(GFBGraphAlbumPrivate));
 
         /**
          * GFBGraphAlbum:name:
@@ -138,7 +138,7 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
 static void
 gfbgraph_album_finalize (GObject *obj)
 {
-	G_OBJECT_CLASS(parent_class)->finalize (obj);
+        G_OBJECT_CLASS(parent_class)->finalize (obj);
 }
 
 static void
@@ -234,12 +234,12 @@ gfbgraph_album_get_connection_post_params (GFBGraphConnectable *self, GType node
  *
  * Creates a new #GFBGraphAlbum.
  *
- * Returns: (transfer full): a new #GFBGraphAlbum; unref with g_object_unref() 
+ * Returns: (transfer full): a new #GFBGraphAlbum; unref with g_object_unref()
  **/
 GFBGraphAlbum*
 gfbgraph_album_new (void)
 {
-	return GFBGRAPH_ALBUM (g_object_new(GFBGRAPH_TYPE_ALBUM, NULL));
+        return GFBGRAPH_ALBUM (g_object_new(GFBGRAPH_TYPE_ALBUM, NULL));
 }
 
 /**

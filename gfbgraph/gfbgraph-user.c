@@ -75,20 +75,20 @@ G_DEFINE_TYPE (GFBGraphUser, gfbgraph_user, GFBGRAPH_TYPE_NODE);
 static void
 gfbgraph_user_init (GFBGraphUser *obj)
 {
-	obj->priv = GFBGRAPH_USER_GET_PRIVATE(obj);
+        obj->priv = GFBGRAPH_USER_GET_PRIVATE(obj);
 }
 
 static void
 gfbgraph_user_class_init (GFBGraphUserClass *klass)
 {
-	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+        GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-	parent_class            = g_type_class_peek_parent (klass);
-	gobject_class->finalize = gfbgraph_user_finalize;
+        parent_class            = g_type_class_peek_parent (klass);
+        gobject_class->finalize = gfbgraph_user_finalize;
         gobject_class->set_property = gfbgraph_user_set_property;
         gobject_class->get_property = gfbgraph_user_get_property;
 
-	g_type_class_add_private (gobject_class, sizeof(GFBGraphUserPrivate));
+        g_type_class_add_private (gobject_class, sizeof(GFBGraphUserPrivate));
 
         /**
          * GFBGraphUser:name:
@@ -106,7 +106,7 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 static void
 gfbgraph_user_finalize (GObject *obj)
 {
-	G_OBJECT_CLASS(parent_class)->finalize (obj);
+        G_OBJECT_CLASS(parent_class)->finalize (obj);
 }
 
 static void
@@ -148,17 +148,17 @@ gfbgraph_user_get_property (GObject *object, guint prop_id, GValue *value, GPara
 static void
 gfbgraph_user_async_data_free (GFBGraphUserAsyncData *data)
 {
-	g_object_unref (data->user);
+        g_object_unref (data->user);
 
-	g_slice_free (GFBGraphUserAsyncData, data);
+        g_slice_free (GFBGraphUserAsyncData, data);
 }
 
 static void
 gfbgraph_user_connection_async_data_free (GFBGraphUserConnectionAsyncData *data)
 {
-	g_object_unref (data->authorizer);
+        g_object_unref (data->authorizer);
 
-	g_slice_free (GFBGraphUserConnectionAsyncData, data);
+        g_slice_free (GFBGraphUserConnectionAsyncData, data);
 }
 
 static void
@@ -199,7 +199,7 @@ gfbgraph_user_get_albums_async_thread (GSimpleAsyncResult *simple_async, GFBGrap
 GFBGraphUser*
 gfbgraph_user_new (void)
 {
-	return GFBGRAPH_USER (g_object_new (GFBGRAPH_TYPE_USER, NULL));
+        return GFBGRAPH_USER (g_object_new (GFBGRAPH_TYPE_USER, NULL));
 }
 
 /**
@@ -268,7 +268,7 @@ gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
  * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
  * @user_data: (closure); The data to pass to @callback.
- * 
+ *
  * Asynchronously retrieve the current user logged. See gfbgraph_user_get_me() for the
  * synchronous version of this call.
  *
@@ -283,7 +283,7 @@ gfbgraph_user_get_me_async (GFBGraphAuthorizer *authorizer, GCancellable *cancel
 
         g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer));
         g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
-	g_return_if_fail (callback != NULL);
+        g_return_if_fail (callback != NULL);
 
         simple_async = g_simple_async_result_new (G_OBJECT (authorizer), callback, user_data, gfbgraph_user_get_me_async);
         g_simple_async_result_set_check_cancellable (simple_async, cancellable);
@@ -303,7 +303,7 @@ gfbgraph_user_get_me_async (GFBGraphAuthorizer *authorizer, GCancellable *cancel
  * @result: A #GAsyncResult.
  * @error: (allow-none): An optional #GError, or %NULL.
  *
- * Finishes an asynchronous operation started with 
+ * Finishes an asynchronous operation started with
  * gfbgraph_user_get_me_async().
  *
  * Returns: (transfer full): a #GFBGraphUser for to the current user logged.
@@ -368,7 +368,7 @@ gfbgraph_user_get_albums_async (GFBGraphUser *user, GFBGraphAuthorizer *authoriz
         g_return_if_fail (GFBGRAPH_IS_USER (user));
         g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer));
         g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
-	g_return_if_fail (callback != NULL);
+        g_return_if_fail (callback != NULL);
 
         simple_async = g_simple_async_result_new (G_OBJECT (user), callback, user_data, gfbgraph_user_get_albums_async);
         g_simple_async_result_set_check_cancellable (simple_async, cancellable);
@@ -390,7 +390,7 @@ gfbgraph_user_get_albums_async (GFBGraphUser *user, GFBGraphAuthorizer *authoriz
  * @result: A #GAsyncResult.
  * @error: (allow-none): An optional #GError, or %NULL.
  *
- * Finishes an asynchronous operation started with 
+ * Finishes an asynchronous operation started with
  * gfbgraph_user_get_albums_async().
  *
  * Returns: (element-type GFBGraphAlbum) (transfer full): a newly-allocated #GList of albums owned by the @user.
