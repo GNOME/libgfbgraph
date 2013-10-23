@@ -1,3 +1,18 @@
+=================
+LibGFBGraph 0.2.1
+=================
+
+This release is centered in a better control of the photos given by the
+Facebook Graph API in order a better integration in GNOME Photos.
+
+Now it's possible to:
+
+- Get all the available sizes of a given photo.
+- Get the higher resolution image available of a photo.
+- Get the available image with a width or height nearest a given number..
+
+Also, the introspection annotations has been enhanced.
+
 ===============
 LibGFBGraph 0.2
 ===============
