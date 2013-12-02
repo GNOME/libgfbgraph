@@ -45,7 +45,8 @@ enum
 
         PROP_ID,
         PROP_LINK,
-        PROP_CREATEDTIME
+        PROP_CREATEDTIME,
+        PROP_UPDATEDTIME
 };
 
 struct _GFBGraphNodePrivate {
@@ -53,6 +54,7 @@ struct _GFBGraphNodePrivate {
         gchar *id;
         gchar *link;
         gchar *created_time;
+        gchar *updated_time;
 };
 
 typedef struct {
@@ -130,6 +132,18 @@ gfbgraph_node_class_init (GFBGraphNodeClass *klass)
                                                               "The node creation time", "An ISO 8601 encoded date when the node was initially published",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphNode:updated_time:
+         *
+         * The last time the node was updated. Is an ISO 8601 encoded date.
+         **/
+        g_object_class_install_property (gobject_class,
+                                         PROP_UPDATEDTIME,
+                                         g_param_spec_string ("updated_time",
+                                                              "The node updated time", "An ISO 8601 encoded date when the node was updated",
+                                                              "",
+                                                              G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 static void
@@ -178,6 +192,11 @@ gfbgraph_node_set_property (GObject *object, guint prop_id, const GValue *value,
                                 g_free (priv->created_time);
                         priv->created_time = g_strdup (g_value_get_string (value));
                         break;
+                case PROP_UPDATEDTIME:
+                        if (priv->updated_time)
+                                g_free (priv->updated_time);
+                        priv->updated_time = g_strdup (g_value_get_string (value));
+                        break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                         break;
@@ -200,6 +219,9 @@ gfbgraph_node_get_property (GObject *object, guint prop_id, GValue *value, GPara
                         break;
                 case PROP_CREATEDTIME:
                         g_value_set_string (value, priv->created_time);
+                        break;
+                case PROP_UPDATEDTIME:
+                        g_value_set_string (value, priv->updated_time);
                         break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -300,7 +322,7 @@ gfbgraph_node_get_id (GFBGraphNode *node)
 {
         g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
 
-        return g_strdup (node->priv->id);
+        return node->priv->id;
 }
 
 /**
@@ -316,7 +338,7 @@ gfbgraph_node_get_link (GFBGraphNode *node)
 {
         g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
 
-        return g_strdup (node->priv->link);
+        return node->priv->link;
 }
 
 /**
@@ -332,7 +354,23 @@ gfbgraph_node_get_created_time (GFBGraphNode *node)
 {
         g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
 
-        return g_strdup (node->priv->created_time);
+        return node->priv->created_time;
+}
+
+/**
+ * gfbgraph_node_get_updated_time:
+ * @node: a #GFBGraphNode.
+ *
+ * Gets a node updated time.
+ *
+ * Returns: (transfer none): an ISO 8601 encoded date when the node was updated.
+ **/
+const gchar*
+gfbgraph_node_get_updated_time (GFBGraphNode *node)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_NODE (node), NULL);
+
+        return node->priv->updated_time;
 }
 
 /**
