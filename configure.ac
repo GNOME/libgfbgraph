@@ -6,7 +6,7 @@ m4_define([gfbgraph_version], [api_major.api_minor.api_micro])
 
 AC_PREREQ([2.63])
 AC_INIT([gfbgraph], [gfbgraph_version],
-        [],
+        [https://bugzilla.gnome.org/enter_bug.cgi?product=gfbgraph],
         [gfbgraph],
         [https://github.com/alvaropg/libgfbgraph.git])
 
