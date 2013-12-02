@@ -400,7 +400,7 @@ gfbgraph_photo_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GEr
  * gfbgraph_photo_download_default_size:
  * @photo: a #GFBGraphPhoto.
  * @authorizer: a #GFBGraphAuthorizer.
- * @error: (allow-none) a #GError or %NULL.
+ * @error: (allow-none): a #GError or %NULL.
  *
  * Download the default sized photo pointed by @photo, with a maximum width or height of 720px.
  * The photo always is a JPEG.

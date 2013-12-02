@@ -91,7 +91,7 @@ gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GTyp
  * gfbgraph_connectable_parse_connected_data:
  * @self: a #GFBGraphConnectable.
  * @payload: a const #gchar with the response string from the Facebook Graph API.
- * @error: (allow-none) a #GError.
+ * @error: (allow-none): a #GError.
  *
  * Parse the response contained in @payload when a gfbgraph_node_get_connection_nodes() was
  * executed.
@@ -168,7 +168,7 @@ gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_
  * gfbgraph_connectable_default_parse_connected_data:
  * @self: a #GFBGraphConnectable.
  * @payload: a const #gchar with the response string from the Facebook Graph API.
- * @error: (allow-none) a #GError or %NULL.
+ * @error: (allow-none): a #GError or %NULL.
  *
  * In most cases, #GFBGraphConnectable implementers can use this function in order to parse
  * the response when a gfbgraph_node_get_connection_nodes() is executed and the

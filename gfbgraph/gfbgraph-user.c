@@ -221,7 +221,7 @@ gfbgraph_user_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GErr
 /**
  * gfbgraph_user_get_me:
  * @authorizer: a #GFBGraphAuthorizer.
- * @error: (allow-none) a #GError or %NULL.
+ * @error: (allow-none): a #GError or %NULL.
  *
  * Retrieve the current user logged using the https://graph.facebook.com/me Graph API function.
  * See gfbgraph_user_get_my_async() for the asynchronous version of this call.
@@ -267,7 +267,7 @@ gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
  * @authorizer: a #GFBGraphAuthorizer.
  * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
- * @user_data: (closure); The data to pass to @callback.
+ * @user_data: (closure): The data to pass to @callback.
  *
  * Asynchronously retrieve the current user logged. See gfbgraph_user_get_me() for the
  * synchronous version of this call.
@@ -351,7 +351,7 @@ gfbgraph_user_get_albums (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GE
  * @authorizer: a #GFBGraphAuthorizer.
  * @cancellable: (allow-none): An optional #GCancellable object, or %NULL.
  * @callback: (scope async): A #GAsyncReadyCallback to call when the request is completed.
- * @user_data: (closure); The data to pass to @callback.
+ * @user_data: (closure): The data to pass to @callback.
  *
  * Asynchronously retrieve the albums nodes owned by the @user. See gfbgraph_user_get_albums() for the
  * synchronous version of this call.
