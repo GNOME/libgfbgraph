@@ -31,6 +31,13 @@ AC_PROG_CC
 
 LT_INIT
 
+# check for gtk-doc
+m4_ifdef([GTK_DOC_CHECK], [
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
+],[
+AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+])
+
 GOBJECT_INTROSPECTION_CHECK([1.30.0])
 
 PKG_CHECK_MODULES(LIBGFBGRAPH, [glib-2.0 gio-2.0 gobject-2.0 rest-0.7 json-glib-1.0])
@@ -46,5 +53,7 @@ AC_SUBST(GOA_API_CHANGE_CPPFLAGS)
 AC_OUTPUT([
 Makefile
 libgfbgraph.pc
+docs/Makefile
+docs/reference/Makefile
 gfbgraph/Makefile
 tests/Makefile])

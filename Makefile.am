@@ -1,4 +1,4 @@
-SUBDIRS = gfbgraph tests
+SUBDIRS = docs gfbgraph tests
 ACLOCAL_AMFLAGS = -I m4
 
 libgfbgraphdocdir = ${prefix}/doc/libgfbgraph
