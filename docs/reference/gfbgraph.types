@@ -1,0 +1,8 @@
+gfbgraph_album_get_type
+gfbgraph_authorizer_get_type
+gfbgraph_connectable_get_type
+gfbgraph_goa_authorizer_get_type
+gfbgraph_node_get_type
+gfbgraph_photo_get_type
+gfbgraph_simple_authorizer_get_type
+gfbgraph_user_get_type
