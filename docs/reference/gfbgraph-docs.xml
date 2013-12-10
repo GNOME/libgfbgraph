@@ -16,7 +16,7 @@
 
   <chapter>
     <title>[Insert title here]</title>
-        <xi:include href="xml/gfbgraph-album.xml"/>
+    <xi:include href="xml/gfbgraph-album.xml"/>
     <xi:include href="xml/gfbgraph-authorizer.xml"/>
     <xi:include href="xml/gfbgraph-common.xml"/>
     <xi:include href="xml/gfbgraph-connectable.xml"/>
