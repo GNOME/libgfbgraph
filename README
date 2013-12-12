@@ -1,4 +1,8 @@
-LibGFBGraph
+ATENTION!
+
+This proyect was moved to the GNOME Git: https://git.gnome.org/browse/libgfbgraph.
+
+GFBGraph
 ==============
 
 A GObject library for Facebook Graph API
