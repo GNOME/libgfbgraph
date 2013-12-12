@@ -1,4 +1,12 @@
 =================
+LibGFBGraph 0.2.2
+=================
+
+Now with development documentation thanks to gtk-doc!
+
+Also the node base class includes the modification date.
+
+=================
 LibGFBGraph 0.2.1
 =================
 
