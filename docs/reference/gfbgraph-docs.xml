@@ -3,38 +3,83 @@
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
 [
   <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
   <bookinfo>
-    <title>gfbgraph Reference Manual</title>
-    <releaseinfo>
-      for gfbgraph [VERSION].
-      The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://[SERVER]/gfbgraph/index.html">http://[SERVER]/gfbgraph/</ulink>.
-    </releaseinfo>
+    <title>GFBGraph Reference Manual</title>
+    <releaseinfo>Version &version;</releaseinfo>
+    <authorgroup>
+      <author>
+        <firstname>Álvaro</firstname>
+        <surname>Peña</surname>
+        <affiliation>
+          <address>
+            <email>alvaropg@gmail.org</email>
+          </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2013</year>
+      <holder>The GFBGraph authors</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>
+	Permission is granted to copy, distribute and/or modify this
+	document under the terms of the <citetitle>GNU Free
+	Documentation License</citetitle>, Version 1.1 or any later
+	version published by the Free Software Foundation with no
+	Invariant Sections, no Front-Cover Texts, and no Back-Cover
+	Texts. You may obtain a copy of the <citetitle>GNU Free
+	Documentation License</citetitle> from the Free Software
+	Foundation by visiting
+        <ulink type="http" url="http://www.fsf.org">their Web site
+        </ulink> or by writing to:
+	<address>
+          <street>51 Franklin Street</street>, Fifth Floor
+          <city>Boston</city>,
+          <state>MA</state>
+          <postcode>02110-1335</postcode>
+          <country>USA</country>
+	</address>
+      </para>
+    </legalnotice>
   </bookinfo>
 
   <chapter>
-    <title>[Insert title here]</title>
-    <xi:include href="xml/gfbgraph-album.xml"/>
+    <title>Authorization</title>
     <xi:include href="xml/gfbgraph-authorizer.xml"/>
-    <xi:include href="xml/gfbgraph-common.xml"/>
-    <xi:include href="xml/gfbgraph-connectable.xml"/>
+    <xi:include href="xml/gfbgraph-simple-authorizer.xml"/>
     <xi:include href="xml/gfbgraph-goa-authorizer.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Nodes</title>
+    <xi:include href="xml/gfbgraph-album.xml"/>
+    <xi:include href="xml/gfbgraph-connectable.xml"/>
     <xi:include href="xml/gfbgraph-node.xml"/>
     <xi:include href="xml/gfbgraph-photo.xml"/>
-    <xi:include href="xml/gfbgraph-simple-authorizer.xml"/>
     <xi:include href="xml/gfbgraph-user.xml"/>
-
   </chapter>
+
+  <chapter>
+    <title>Other</title>
+    <xi:include href="xml/gfbgraph-common.xml"/>
+  </chapter>
+
   <chapter id="object-tree">
     <title>Object Hierarchy</title>
      <xi:include href="xml/tree_index.sgml"/>
   </chapter>
+
   <index id="api-index-full">
     <title>API Index</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
   </index>
+
   <index id="deprecated-api-index" role="deprecated">
     <title>Index of deprecated API</title>
     <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>

@@ -55,5 +55,6 @@ Makefile
 libgfbgraph.pc
 docs/Makefile
 docs/reference/Makefile
+docs/reference/version.xml
 gfbgraph/Makefile
 tests/Makefile])
