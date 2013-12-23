@@ -4,10 +4,11 @@
 [
   <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
   <!ENTITY version SYSTEM "version.xml">
+  <!ENTITY apiversion SYSTEM "apiversion.xml">
 ]>
 <book id="index">
   <bookinfo>
-    <title>GFBGraph Reference Manual</title>
+    <title>GFBGraph &apiversion; Reference Manual</title>
     <releaseinfo>Version &version;</releaseinfo>
     <authorgroup>
       <author>
