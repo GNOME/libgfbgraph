@@ -1,0 +1,8 @@
+To run the tests it's required a file called "credentials.ini" placed in this
+folder. In that file you need to put your cliend id and your client secret
+codes. You can get both from the Facebook Developer Page.
+
+This is an example content of credentials.ini:
+[Client]
+ClientId=000000000000000
+ClientSecret=00000000000000000000000000000000
