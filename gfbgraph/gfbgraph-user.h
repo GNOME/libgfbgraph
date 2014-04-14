@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
- * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ * Copyright (C) 2013-2014 Álvaro Peña <alvaropg@gmail.com>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,7 +61,8 @@ GList*        gfbgraph_user_get_albums              (GFBGraphUser *user, GFBGrap
 void          gfbgraph_user_get_albums_async        (GFBGraphUser *user, GFBGraphAuthorizer *authorizer, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 GList*        gfbgraph_user_get_albums_async_finish (GFBGraphUser *user, GAsyncResult *result, GError **error);
 
-const gchar*  gfbgraph_user_get_name (GFBGraphUser *user);
+const gchar*  gfbgraph_user_get_name  (GFBGraphUser *user);
+const gchar*  gfbgraph_user_get_email (GFBGraphUser *user);
 
 G_END_DECLS
 

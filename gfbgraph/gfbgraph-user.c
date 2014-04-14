@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
- * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ * Copyright (C) 2013-2014 Álvaro Peña <alvaropg@gmail.com>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,11 +38,13 @@
 enum {
         PROP_0,
 
-        PROP_NAME
+        PROP_NAME,
+        PROP_EMAIL
 };
 
 struct _GFBGraphUserPrivate {
         gchar *name;
+        gchar *email;
 };
 
 typedef struct {
@@ -101,6 +103,18 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
                                                               "User's full name", "The full name of the user",
                                                               "",
                                                               G_PARAM_READABLE | G_PARAM_WRITABLE));
+
+        /**
+         * GFBGraphUser:email:
+         *
+         * The email of the user if available
+         **/
+        g_object_class_install_property (gobject_class,
+                                         PROP_EMAIL,
+                                         g_param_spec_string ("email",
+                                                              "User's email", "The user primary email if available",
+                                                              NULL,
+                                                              G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 static void
@@ -122,6 +136,11 @@ gfbgraph_user_set_property (GObject *object, guint prop_id, const GValue *value,
                                 g_free (priv->name);
                         priv->name = g_strdup (g_value_get_string (value));
                         break;
+                case PROP_EMAIL:
+                        if (priv->email)
+                                g_free (priv->email);
+                        priv->email = g_strdup (g_value_get_string (value));
+                        break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                         break;
@@ -138,6 +157,9 @@ gfbgraph_user_get_property (GObject *object, guint prop_id, GValue *value, GPara
         switch (prop_id) {
                 case PROP_NAME:
                         g_value_set_string (value, priv->name);
+                        break;
+                case PROP_EMAIL:
+                        g_value_set_string (value, priv->email);
                         break;
                 default:
                         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -428,4 +450,21 @@ gfbgraph_user_get_name (GFBGraphUser *user)
         g_return_val_if_fail (GFBGRAPH_IS_USER (user), NULL);
 
         return user->priv->name;
+}
+
+/**
+ * gfbgraph_user_get_email:
+ * @user: a #GFBGraphUser.
+ *
+ * Get the user email. To retrieve this propertie, you need 'email' extended
+ * permission.
+ *
+ * Returns: (transfer none): a const #gchar with the user email, or %NULL.
+ **/
+const gchar*
+gfbgraph_user_get_email (GFBGraphUser *user)
+{
+        g_return_val_if_fail (GFBGRAPH_IS_USER (user), NULL);
+
+        return user->priv->email;
 }
