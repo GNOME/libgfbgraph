@@ -191,6 +191,8 @@ gfbgraph_test_me (GFBGraphTestFixture *fixture, gconstpointer user_data)
         g_assert_no_error (error);
         g_assert (GFBGRAPH_IS_USER (me));
 
+        g_assert_cmpstr (fixture->user_id, ==, gfbgraph_node_get_id (GFBGRAPH_NODE (me)));
+
         g_object_unref (me);
 }
 
