@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
- * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ * Copyright (C) 2013-2014 Álvaro Peña <alvaropg@gmail.com>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ typedef struct _GFBGraphTestApp     GFBGraphTestApp;
 struct _GFBGraphTestFixture
 {
         gchar *user_id;
+        gchar *user_email;
 
         GFBGraphSimpleAuthorizer *authorizer;
 };
@@ -44,6 +45,8 @@ struct _GFBGraphTestApp
 };
 
 #define FACEBOOK_ENDPOINT "https://graph.facebook.com"
+
+#define FACEBOOK_TEST_USER_PERMISSIONS "user_about_me,user_photos,email"
 
 GFBGraphTestApp*
 gfbgraph_test_app_setup (void)
@@ -122,7 +125,7 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
 
         /* Params as documented here: https://developers.facebook.com/docs/graph-api/reference/app/accounts/test-users#publish */
         rest_proxy_call_add_param (rest_call, "installed", "true");
-        rest_proxy_call_add_param (rest_call, "permissions", "user_about_me,user_photos");
+        rest_proxy_call_add_param (rest_call, "permissions", FACEBOOK_TEST_USER_PERMISSIONS);
         rest_proxy_call_add_param (rest_call, "access_token", app->access_token);
 
         rest_proxy_call_set_method (rest_call, "POST");
@@ -144,6 +147,9 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
         json_reader_end_element (jreader);
         json_reader_read_element (jreader, 1);
         access_token = g_strdup (json_reader_get_string_value (jreader));
+        json_reader_end_element (jreader);
+        json_reader_read_element (jreader, 3);
+        fixture->user_email = g_strdup (json_reader_get_string_value (jreader));
         json_reader_end_element (jreader);
 
         fixture->authorizer = gfbgraph_simple_authorizer_new (access_token);
@@ -178,6 +184,7 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, gconstpointer user
         g_free (function_path);
         g_free (auth_value);
         g_free (fixture->user_id);
+        g_free (fixture->user_email);
         g_object_unref (fixture->authorizer);
 }
 
@@ -192,6 +199,8 @@ gfbgraph_test_me (GFBGraphTestFixture *fixture, gconstpointer user_data)
         g_assert (GFBGRAPH_IS_USER (me));
 
         g_assert_cmpstr (fixture->user_id, ==, gfbgraph_node_get_id (GFBGRAPH_NODE (me)));
+
+        g_assert_cmpstr (fixture->user_email, ==, gfbgraph_user_get_email (me));
 
         g_object_unref (me);
 }
