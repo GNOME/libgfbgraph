@@ -553,7 +553,20 @@ gfbgraph_node_append_connection (GFBGraphNode *node, GFBGraphNode *connect_node,
         g_return_val_if_fail (GFBGRAPH_IS_NODE (node), FALSE);
         g_return_val_if_fail (GFBGRAPH_IS_NODE (connect_node), FALSE);
         g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer), FALSE);
-        /* TODO: Check if connect_node is connectable to node */
+
+        if (GFBGRAPH_IS_CONNECTABLE (connect_node) == FALSE) {
+                g_set_error (error, GFBGRAPH_NODE_ERROR,
+                             GFBGRAPH_NODE_ERROR_NO_CONNECTABLE,
+                             "The given node type (%s) doesn't implement connectable interface", G_OBJECT_TYPE_NAME (connect_node));
+                return FALSE;
+        }
+
+        if (gfbgraph_connectable_is_connectable_to (GFBGRAPH_CONNECTABLE (connect_node), G_OBJECT_TYPE (node)) == FALSE) {
+                g_set_error (error, GFBGRAPH_NODE_ERROR,
+                             GFBGRAPH_NODE_ERROR_NO_CONNECTABLE,
+                             "The given node type (%s) can't append a %s connection", G_OBJECT_TYPE_NAME (node), G_OBJECT_TYPE_NAME (connect_node));
+                return FALSE;
+        }
 
         priv = GFBGRAPH_NODE_GET_PRIVATE (node);
 
@@ -579,9 +592,24 @@ gfbgraph_node_append_connection (GFBGraphNode *node, GFBGraphNode *connect_node,
 
         if (rest_proxy_call_sync (rest_call, error)) {
                 const gchar *payload;
+                JsonParser *jparser;
+                JsonNode *jnode;
+                JsonReader *jreader;
 
                 payload = rest_proxy_call_get_payload (rest_call);
-                /* TODO: Parse result (the ID) and put to the connect_node */
+                /* Parssing the new ID */
+                jparser = json_parser_new ();
+                json_parser_load_from_data (jparser, payload, -1, error);
+                jnode = json_parser_get_root (jparser);
+                jreader = json_reader_new (jnode);
+
+                json_reader_read_element (jreader, 0);
+                gfbgraph_node_set_id (connect_node,
+                                      json_reader_get_string_value (jreader));
+                json_reader_end_element (jreader);
+
+                g_object_unref (jreader);
+                g_object_unref (jparser);
         } else {
                 return FALSE;
         }
