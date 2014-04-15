@@ -56,6 +56,9 @@ const gchar*   gfbgraph_album_get_description    (GFBGraphAlbum *album);
 const gchar*   gfbgraph_album_get_cover_photo_id (GFBGraphAlbum *album);
 guint          gfbgraph_album_get_count          (GFBGraphAlbum *album);
 
+void           gfbgraph_album_set_name           (GFBGraphAlbum *album, const gchar *name);
+void           gfbgraph_album_set_description    (GFBGraphAlbum *album, const gchar *description);
+
 G_END_DECLS
 
 #endif /* __GFBGRAPH_ALBUM_H__ */

@@ -313,3 +313,39 @@ gfbgraph_album_get_count (GFBGraphAlbum *album)
 
         return album->priv->count;
 }
+
+/**
+ * gfbgraph_album_set_name:
+ * @album: a #GFBGraphAlbum.
+ * @name: a const pointer to a #gchar.
+ *
+ * Sets the name for the @album.
+ **/
+void
+gfbgraph_album_set_name (GFBGraphAlbum *album, const gchar *name)
+{
+        g_return_if_fail (GFBGRAPH_IS_ALBUM (album));
+        g_return_if_fail (name != NULL);
+
+        g_object_set (G_OBJECT (album),
+                      "name", name,
+                      NULL);
+}
+
+/**
+ * gfbgraph_album_set_description:
+ * @album: a #GFBGraphAlbum.
+ * @description: a const pointer to a #gchar.
+ *
+ * Sets the description for the @album.
+ **/
+void
+gfbgraph_album_set_description (GFBGraphAlbum *album, const gchar *description)
+{
+        g_return_if_fail (GFBGRAPH_IS_ALBUM (album));
+        g_return_if_fail (description != NULL);
+
+        g_object_set (G_OBJECT (album),
+                      "description", description,
+                      NULL);
+}
