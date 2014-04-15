@@ -374,6 +374,25 @@ gfbgraph_node_get_updated_time (GFBGraphNode *node)
 }
 
 /**
+ * gfbgraph_node_set_id:
+ * @node: a #GFBGraphNode.
+ * @id: a const pointer to a #gchar.
+ *
+ * Sets the ID for a node. Just useful when a new node is created
+ * and the Graph API returns the ID of the new created node.
+ **/
+void
+gfbgraph_node_set_id (GFBGraphNode *node, const gchar *id)
+{
+        g_return_if_fail (GFBGRAPH_IS_NODE (node));
+        g_return_if_fail (id != NULL);
+
+        g_object_set (G_OBJECT (node),
+                      "id", id,
+                      NULL);
+}
+
+/**
  * gfbgraph_node_get_connection_nodes:
  * @node: a #GFBGraphNode object which retrieve the connected nodes.
  * @node_type: a #GFBGraphNode type #GType that determines the kind of nodes to retrieve.

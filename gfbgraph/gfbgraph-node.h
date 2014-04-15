@@ -65,6 +65,8 @@ const gchar*   gfbgraph_node_get_link         (GFBGraphNode *node);
 const gchar*   gfbgraph_node_get_created_time (GFBGraphNode *node);
 const gchar*   gfbgraph_node_get_updated_time (GFBGraphNode *node);
 
+void           gfbgraph_node_set_id           (GFBGraphNode *node, const gchar *id);
+
 GList*         gfbgraph_node_get_connection_nodes              (GFBGraphNode         *node,
                                                                 GType                 node_type,
                                                                 GFBGraphAuthorizer   *authorizer,
