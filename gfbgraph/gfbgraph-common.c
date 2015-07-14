@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
- * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ * Copyright (C) 2013-2015 Álvaro Peña <alvaropg@gmail.com>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@
 
 #include <rest/rest-proxy.h>
 
-#define FACEBOOK_ENDPOINT "https://graph.facebook.com"
+#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.3"
 
 /**
  * gfbgraph_new_rest_call:

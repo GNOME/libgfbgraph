@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
- * Copyright (C) 2013-2014 Álvaro Peña <alvaropg@gmail.com>
+ * Copyright (C) 2013-2015 Álvaro Peña <alvaropg@gmail.com>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,7 +44,7 @@ struct _GFBGraphTestApp
         gchar *access_token;
 };
 
-#define FACEBOOK_ENDPOINT "https://graph.facebook.com"
+#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.3"
 
 #define FACEBOOK_TEST_USER_PERMISSIONS "user_about_me,user_photos,email"
 
@@ -58,6 +58,10 @@ gfbgraph_test_app_setup (void)
         GKeyFile *app_key_file;
         gchar *app_key_filename;
         GError *error = NULL;
+        const char *payload;
+        JsonNode *jnode;
+        JsonParser *jparser;
+        JsonReader *jreader;
 
         app_key_filename = g_test_build_filename (G_TEST_BUILT,
                                                   "credentials.ini",
@@ -96,7 +100,16 @@ gfbgraph_test_app_setup (void)
         rest_proxy_call_sync (rest_call, &error);
         g_assert_no_error (error);
 
-        app->access_token = g_strdup(g_strrstr(rest_proxy_call_get_payload (rest_call), "=") + 1);
+        payload = rest_proxy_call_get_payload (rest_call);
+        jparser = json_parser_new ();
+        json_parser_load_from_data (jparser, payload, -1, &error);
+        g_assert_no_error (error);
+        jnode = json_parser_get_root (jparser);
+        jreader = json_reader_new (jnode);
+        json_reader_read_element (jreader, 0);
+        app->access_token = g_strdup(json_reader_get_string_value (jreader));
+        json_reader_end_element (jreader);
+        g_object_unref(jparser);
 
         g_clear_object(&rest_call);
         g_clear_object(&proxy);
@@ -180,6 +193,7 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, gconstpointer user
         gfbgraph_authorizer_process_message (GFBGRAPH_AUTHORIZER (fixture->authorizer), smessage);
 
         status = soup_session_send_message (ssession, smessage);
+        g_assert_cmpint(status, ==, 200);
 
         g_free (function_path);
         g_free (auth_value);
@@ -234,6 +248,8 @@ main (int argc, char **argv)
         int test_result;
 
         g_test_init (&argc, &argv, NULL);
+
+        g_log_set_always_fatal (G_LOG_LEVEL_ERROR | G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL | G_LOG_LEVEL_CRITICAL);
 
         app = gfbgraph_test_app_setup ();
 
