@@ -1,4 +1,22 @@
 =================
+LibGFBGraph 0.2.3
+=================
+
+The major update in this version is the support fo the version 2.3 of
+the Facebook Graph API.
+
+The changes include:
+
+- The tests has been improved to use the Facebook test API
+  (creating a test user).
+- A node now can be linked to other (if allowed). This allow to
+  publish data to Facebook! For the moment just albums and photos.
+- Bug #752380 Updated the API of Facebook Graph to version 2.3 due
+  deprecation of 1.0.
+- The documentation has been polished and now respect parallel
+  installations.
+
+=================
 LibGFBGraph 0.2.2
 =================
 
