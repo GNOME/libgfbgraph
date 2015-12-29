@@ -46,7 +46,7 @@ struct _GFBGraphTestApp
 
 #define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.3"
 
-#define FACEBOOK_TEST_USER_PERMISSIONS "user_about_me,user_photos,email"
+#define FACEBOOK_TEST_USER_PERMISSIONS "user_about_me,user_photos,email,publish_actions"
 
 GFBGraphTestApp*
 gfbgraph_test_app_setup (void)
