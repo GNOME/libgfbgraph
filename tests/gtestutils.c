@@ -225,6 +225,7 @@ gfbgraph_test_album (GFBGraphTestFixture *fixture, gconstpointer user_data)
         GFBGraphUser *me;
         GFBGraphAlbum *album;
         GError *error = NULL;
+        gboolean result;
 
         me = gfbgraph_user_get_me (GFBGRAPH_AUTHORIZER (fixture->authorizer), &error);
         g_assert_no_error (error);
@@ -234,11 +235,16 @@ gfbgraph_test_album (GFBGraphTestFixture *fixture, gconstpointer user_data)
         album = gfbgraph_album_new ();
         gfbgraph_album_set_name (album, "Vanilla Sky");
         gfbgraph_album_set_description (album, "Great sunset photos in Mars!");
-        g_assert (gfbgraph_node_append_connection (GFBGRAPH_NODE (me),
-                                                   GFBGRAPH_NODE (album),
-                                                   GFBGRAPH_AUTHORIZER (fixture->authorizer),
-                                                   &error));
+        result = gfbgraph_node_append_connection (GFBGRAPH_NODE (me),
+                                                  GFBGRAPH_NODE (album),
+                                                  GFBGRAPH_AUTHORIZER (fixture->authorizer),
+                                                  &error);
+        /* Asserting the connection */
         g_assert_no_error (error);
+        g_assert (result);
+
+        /* Asserting the Album ID */
+        g_assert_cmpstr (gfbgraph_node_get_id (GFBGRAPH_NODE (album)), !=, "");
 }
 
 int
