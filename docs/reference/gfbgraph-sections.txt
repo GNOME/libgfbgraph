@@ -163,6 +163,7 @@ gfbgraph_user_get_albums
 gfbgraph_user_get_albums_async
 gfbgraph_user_get_albums_async_finish
 gfbgraph_user_get_name
+gfbgraph_user_get_email
 <SUBSECTION Standard>
 GFBGRAPH_IS_USER
 GFBGRAPH_IS_USER_CLASS
