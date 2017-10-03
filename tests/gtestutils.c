@@ -44,9 +44,9 @@ struct _GFBGraphTestApp
         gchar *access_token;
 };
 
-#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.3"
+#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.10"
 
-#define FACEBOOK_TEST_USER_PERMISSIONS "user_about_me,user_photos,email,publish_actions"
+#define FACEBOOK_TEST_USER_PERMISSIONS "email,user_about_me,user_photos,publish_actions"
 
 GFBGraphTestApp*
 gfbgraph_test_app_setup (void)
@@ -174,15 +174,12 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
 }
 
 static void
-gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, gconstpointer user_data)
+gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
         SoupSession *ssession;
         SoupMessage *smessage;
         gchar *function_path;
-        gchar *auth_value;
         guint status;
-        const GFBGraphTestApp *app = user_data;
-        SoupURI *uri;
 
         /* Delete the test user and clean up memory */
 
@@ -196,14 +193,13 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, gconstpointer user
         g_assert_cmpint(status, ==, 200);
 
         g_free (function_path);
-        g_free (auth_value);
         g_free (fixture->user_id);
         g_free (fixture->user_email);
         g_object_unref (fixture->authorizer);
 }
 
 static void
-gfbgraph_test_me (GFBGraphTestFixture *fixture, gconstpointer user_data)
+gfbgraph_test_me (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
         GFBGraphUser *me;
         GError *error = NULL;
@@ -220,7 +216,7 @@ gfbgraph_test_me (GFBGraphTestFixture *fixture, gconstpointer user_data)
 }
 
 static void
-gfbgraph_test_album (GFBGraphTestFixture *fixture, gconstpointer user_data)
+gfbgraph_test_album (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
         GFBGraphUser *me;
         GFBGraphAlbum *album;

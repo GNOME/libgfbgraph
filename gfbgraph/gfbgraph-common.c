@@ -21,7 +21,7 @@
 
 #include <rest/rest-proxy.h>
 
-#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.3"
+#define FACEBOOK_ENDPOINT "https://graph.facebook.com/v2.10"
 
 /**
  * gfbgraph_new_rest_call:

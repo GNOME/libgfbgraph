@@ -265,6 +265,7 @@ gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
         rest_call = gfbgraph_new_rest_call (authorizer);
         rest_proxy_call_set_function (rest_call, ME_FUNCTION);
         rest_proxy_call_set_method (rest_call, "GET");
+        rest_proxy_call_add_param (rest_call, "fields", "name,email");
 
         result = rest_proxy_call_sync (rest_call, error);
         if (result) {
