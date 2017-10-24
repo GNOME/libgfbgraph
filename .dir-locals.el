@@ -1,5 +1,6 @@
 ((c-mode
   (flycheck-clang-include-path "/home/alvaropg/work/git/libgfbgraph/"
+                               "/usr/include/json-glib-1.0"
                                "/usr/include/goa-1.0"
                                "/usr/lib64/goa-1.0/include"
                                "/usr/include/rest-0.7"
