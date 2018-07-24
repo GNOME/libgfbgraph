@@ -38,6 +38,8 @@ typedef struct _GFBGraphUser      GFBGraphUser;
 typedef struct _GFBGraphUserClass GFBGraphUserClass;
 typedef struct _GFBGraphUserPrivate         GFBGraphUserPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GFBGraphUser, g_object_unref)
+
 struct _GFBGraphUser {
         GFBGraphNode parent;
 
