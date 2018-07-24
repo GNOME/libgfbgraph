@@ -36,6 +36,8 @@ typedef struct _GFBGraphAlbum        GFBGraphAlbum;
 typedef struct _GFBGraphAlbumClass   GFBGraphAlbumClass;
 typedef struct _GFBGraphAlbumPrivate GFBGraphAlbumPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GFBGraphAlbum, g_object_unref)
+
 struct _GFBGraphAlbum {
         GFBGraphNode parent;
 
