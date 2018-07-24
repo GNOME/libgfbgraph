@@ -36,6 +36,8 @@ typedef struct _GFBGraphPhoto        GFBGraphPhoto;
 typedef struct _GFBGraphPhotoClass   GFBGraphPhotoClass;
 typedef struct _GFBGraphPhotoPrivate GFBGraphPhotoPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GFBGraphPhoto, g_object_unref)
+
 struct _GFBGraphPhoto {
         GFBGraphNode parent;
 
