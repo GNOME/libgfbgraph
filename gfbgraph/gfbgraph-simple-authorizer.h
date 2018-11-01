@@ -35,6 +35,8 @@ typedef struct _GFBGraphSimpleAuthorizer        GFBGraphSimpleAuthorizer;
 typedef struct _GFBGraphSimpleAuthorizerClass   GFBGraphSimpleAuthorizerClass;
 typedef struct _GFBGraphSimpleAuthorizerPrivate GFBGraphSimpleAuthorizerPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GFBGraphSimpleAuthorizer, g_object_unref);
+
 struct _GFBGraphSimpleAuthorizer {
         GObject parent;
 
