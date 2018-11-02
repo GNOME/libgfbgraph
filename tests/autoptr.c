@@ -24,6 +24,7 @@
 #include <glib.h>
 
 #include <gfbgraph/gfbgraph.h>
+#include <gfbgraph/gfbgraph-simple-authorizer.h>
 
 static void
 test_gfbgraph_album (void)
@@ -61,6 +62,15 @@ test_gfbgraph_user (void)
         g_assert_nonnull (val);
 }
 
+static void
+test_gfbgraph_simple_authorizer (void)
+{
+        g_autoptr (GFBGraphSimpleAuthorizer) val = NULL;
+
+        val = gfbgraph_simple_authorizer_new (NULL);
+        g_assert_nonnull (val);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -71,6 +81,7 @@ main (int   argc,
         g_test_add_func ("/GFBGraph/autoptr/Node", test_gfbgraph_node);
         g_test_add_func ("/GFBGraph/autoptr/Photo", test_gfbgraph_photo);
         g_test_add_func ("/GFBGraph/autoptr/User", test_gfbgraph_user);
+        g_test_add_func ("/GFBGraph/autoptr/SimpleAuthorizer", test_gfbgraph_simple_authorizer);
 
         return g_test_run ();
 }
