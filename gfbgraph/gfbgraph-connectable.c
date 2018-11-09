@@ -34,7 +34,7 @@
 
 #include <json-glib/json-glib.h>
 
-G_DEFINE_INTERFACE (GFBGraphConnectable, gfbgraph_connectable, GFBGRAPH_TYPE_NODE)
+G_DEFINE_INTERFACE (GFBGraphConnectable, gfbgraph_connectable, G_TYPE_OBJECT)
 
 static void
 gfbgraph_connectable_default_init (GFBGraphConnectableInterface *iface)

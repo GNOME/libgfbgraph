@@ -25,13 +25,11 @@
 G_BEGIN_DECLS
 
 #define GFBGRAPH_TYPE_CONNECTABLE          (gfbgraph_connectable_get_type ())
-#define GFBGRAPH_CONNECTABLE(o)            (G_TYPE_CHECK_INSTANCE_CAST ((o), GFBGRAPH_TYPE_CONNECTABLE, GFBGraphConnectable))
-#define GFBGRAPH_CONNECTABLE_CLASS(k)      (G_TYPE_CHECK_CLASS_CAST((k), GFBGRAPH_TYPE_CONNECTABLE, GFBGraphConnectableInterface))
-#define GFBGRAPH_IS_CONNECTABLE(o)         (G_TYPE_CHECK_INSTANCE_TYPE ((o), GFBGRAPH_TYPE_CONNECTABLE))
-#define GFBGRAPH_CONNECTABLE_GET_IFACE(o)  (G_TYPE_INSTANCE_GET_INTERFACE ((o), GFBGRAPH_TYPE_CONNECTABLE, GFBGraphConnectableInterface))
 
-typedef struct _GFBGraphConnectable          GFBGraphConnectable;
-typedef struct _GFBGraphConnectableInterface GFBGraphConnectableInterface;
+G_DECLARE_INTERFACE (GFBGraphConnectable, gfbgraph_connectable, GFBGRAPH, CONNECTABLE, GObject)
+
+/* It can still be used in somewhere. */
+#define GFBGRAPH_CONNECTABLE_CLASS(k)      (G_TYPE_CHECK_CLASS_CAST((k), GFBGRAPH_TYPE_CONNECTABLE, GFBGraphConnectableInterface))
 
 struct _GFBGraphConnectableInterface {
         GTypeInterface parent;
@@ -41,8 +39,6 @@ struct _GFBGraphConnectableInterface {
         GHashTable   *(*get_connection_post_params) (GFBGraphConnectable *self, GType node_type);
         GList        *(*parse_connected_data) (GFBGraphConnectable *self, const gchar *payload, GError **error);
 };
-
-GType gfbgraph_connectable_get_type (void) G_GNUC_CONST;
 
 GHashTable*  gfbgraph_connectable_get_connection_post_params   (GFBGraphConnectable *self, GType node_type);
 GList*       gfbgraph_connectable_parse_connected_data         (GFBGraphConnectable *self, const gchar *payload, GError **error);
