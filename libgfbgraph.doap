@@ -8,7 +8,7 @@
   <shortdesc xml:lang="en">GLib/GObject wrapper for the Facebook Graph API</shortdesc>
 
   <download-page rdf:resource="http://download.gnome.org/sources/libgfbgraph" />
-  <bug-database rdf:resource="https://bugzilla.gnome.org/enter_bug.cgi?product=libgfbgraph" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/libgfbgraph/issues/" />
 
   <!-- <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" /> -->
 
