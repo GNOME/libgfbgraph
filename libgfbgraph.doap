@@ -19,4 +19,12 @@
       <gnome:userid>alvaropg</gnome:userid>
     </foaf:Person>
   </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Leesoo Ahn</foaf:name>
+      <foaf:mbox rdf:resource="mailto:yisooan@fedoraproject.org" />
+      <gnome:userid>yisooan</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>
