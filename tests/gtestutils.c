@@ -215,7 +215,7 @@ gfbgraph_test_me (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user
         g_object_unref (me);
 }
 
-static void
+static G_GNUC_UNUSED void
 gfbgraph_test_album (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
         GFBGraphUser *me;
@@ -262,12 +262,14 @@ main (int argc, char **argv)
                     gfbgraph_test_me,
                     gfbgraph_test_fixture_teardown);
 
+#if 0
         g_test_add ("/GFBGraph/Album",
                     GFBGraphTestFixture,
                     app,
                     gfbgraph_test_fixture_setup,
                     gfbgraph_test_album,
                     gfbgraph_test_fixture_teardown);
+#endif
 
         test_result = g_test_run ();
 
