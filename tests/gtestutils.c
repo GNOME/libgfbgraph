@@ -174,7 +174,7 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
 }
 
 static void
-gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
+gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
         SoupSession *ssession;
         SoupMessage *smessage;
@@ -199,7 +199,7 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, __attribute__ ((un
 }
 
 static void
-gfbgraph_test_me (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
+gfbgraph_test_me (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
         GFBGraphUser *me;
         GError *error = NULL;
@@ -216,7 +216,7 @@ gfbgraph_test_me (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstp
 }
 
 static void
-gfbgraph_test_album (GFBGraphTestFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
+gfbgraph_test_album (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
         GFBGraphUser *me;
         GFBGraphAlbum *album;
