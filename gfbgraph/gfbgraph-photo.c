@@ -292,8 +292,6 @@ gfbgraph_photo_serializable_serialize_property (JsonSerializable *serializable, 
 {
         JsonNode *node = NULL;
 
-        g_print ("Serializing %s\n", property_name);
-
         if (g_strcmp0 ("images", property_name) == 0) {
         } else {
                 node = json_serializable_default_serialize_property (serializable, property_name, value, pspec);
