@@ -28,12 +28,8 @@
 G_BEGIN_DECLS
 
 #define GFBGRAPH_TYPE_AUTHORIZER          (gfbgraph_authorizer_get_type ())
-#define GFBGRAPH_AUTHORIZER(o)            (G_TYPE_CHECK_INSTANCE_CAST ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizer))
-#define GFBGRAPH_IS_AUTHORIZER(o)         (G_TYPE_CHECK_INSTANCE_TYPE ((o), GFBGRAPH_TYPE_AUTHORIZER))
-#define GFBGRAPH_AUTHORIZER_GET_IFACE(o)  (G_TYPE_INSTANCE_GET_INTERFACE ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizerInterface))
 
-typedef struct _GFBGraphAuthorizer          GFBGraphAuthorizer;
-typedef struct _GFBGraphAuthorizerInterface GFBGraphAuthorizerInterface;
+G_DECLARE_INTERFACE (GFBGraphAuthorizer, gfbgraph_authorizer, GFBGRAPH, AUTHORIZER, GObject)
 
 /**
  * GFBGraphAuthorizerInterface:
@@ -56,8 +52,6 @@ struct _GFBGraphAuthorizerInterface {
                                               GCancellable *cancellable,
                                               GError **error);
 };
-
-GType    gfbgraph_authorizer_get_type              (void) G_GNUC_CONST;
 
 void     gfbgraph_authorizer_process_call          (GFBGraphAuthorizer *iface,
                                                     RestProxyCall *call);
