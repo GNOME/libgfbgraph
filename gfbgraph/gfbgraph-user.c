@@ -281,6 +281,7 @@ gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
 
                 g_object_unref (parser);
         }
+        g_object_unref (rest_call);
 
         return me;
 }
