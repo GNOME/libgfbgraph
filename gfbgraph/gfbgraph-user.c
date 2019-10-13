@@ -56,9 +56,9 @@ typedef struct {
         GList *nodes;
 } GFBGraphUserConnectionAsyncData;
 
-static void gfbgraph_user_init         (GFBGraphUser *obj);
+static void gfbgraph_user_init         (GFBGraphUser *object);
 static void gfbgraph_user_class_init   (GFBGraphUserClass *klass);
-static void gfbgraph_user_finalize     (GObject *obj);
+static void gfbgraph_user_finalize     (GObject *object);
 static void gfbgraph_user_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void gfbgraph_user_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
@@ -75,9 +75,9 @@ static GFBGraphNodeClass *parent_class = NULL;
 G_DEFINE_TYPE (GFBGraphUser, gfbgraph_user, GFBGRAPH_TYPE_NODE);
 
 static void
-gfbgraph_user_init (GFBGraphUser *obj)
+gfbgraph_user_init (GFBGraphUser *object)
 {
-        obj->priv = GFBGRAPH_USER_GET_PRIVATE(obj);
+        object->priv = GFBGRAPH_USER_GET_PRIVATE (object);
 }
 
 static void
@@ -118,22 +118,20 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 }
 
 static void
-gfbgraph_user_finalize (GObject *obj)
+gfbgraph_user_finalize (GObject *object)
 {
-        GFBGraphUserPrivate *priv = GFBGRAPH_USER_GET_PRIVATE (obj);
+        GFBGraphUserPrivate *priv = GFBGRAPH_USER_GET_PRIVATE (object);
 
         g_free (priv->name);
         g_free (priv->email);
 
-        G_OBJECT_CLASS(parent_class)->finalize (obj);
+        G_OBJECT_CLASS(parent_class)->finalize (object);
 }
 
 static void
 gfbgraph_user_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-        GFBGraphUserPrivate *priv;
-
-        priv = GFBGRAPH_USER_GET_PRIVATE (object);
+        GFBGraphUserPrivate *priv = GFBGRAPH_USER_GET_PRIVATE (object);
 
         switch (prop_id) {
                 case PROP_NAME:
@@ -155,9 +153,7 @@ gfbgraph_user_set_property (GObject *object, guint prop_id, const GValue *value,
 static void
 gfbgraph_user_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
-        GFBGraphUserPrivate *priv;
-
-        priv = GFBGRAPH_USER_GET_PRIVATE (object);
+        GFBGraphUserPrivate *priv = GFBGRAPH_USER_GET_PRIVATE (object);
 
         switch (prop_id) {
                 case PROP_NAME:
@@ -192,11 +188,10 @@ static void
 gfbgraph_user_get_me_async_thread (GSimpleAsyncResult *simple_async, GFBGraphAuthorizer *authorizer, GCancellable cancellable)
 {
         GFBGraphUserAsyncData *data;
-        GError *error;
+        GError *error = NULL;
 
         data = (GFBGraphUserAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
 
-        error = NULL;
         data->user = gfbgraph_user_get_me (authorizer, &error);
         if (error != NULL)
                 g_simple_async_result_take_error (simple_async, error);
@@ -206,11 +201,10 @@ static void
 gfbgraph_user_get_albums_async_thread (GSimpleAsyncResult *simple_async, GFBGraphUser *user, GCancellable cancellable)
 {
         GFBGraphUserConnectionAsyncData *data;
-        GError *error;
+        GError *error = NULL;
 
         data = (GFBGraphUserConnectionAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
 
-        error = NULL;
         data->nodes = gfbgraph_user_get_albums (user, data->authorizer, &error);
         if (error != NULL)
                 g_simple_async_result_take_error (simple_async, error);
@@ -258,14 +252,12 @@ gfbgraph_user_new_from_id (GFBGraphAuthorizer *authorizer, const gchar *id, GErr
 GFBGraphUser*
 gfbgraph_user_get_me (GFBGraphAuthorizer *authorizer, GError **error)
 {
-        GFBGraphUser *me;
+        GFBGraphUser *me = NULL;
         RestProxyCall *rest_call;
         const gchar *payload;
         gboolean result;
 
         g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer), NULL);
-
-        me = NULL;
 
         rest_call = gfbgraph_new_rest_call (authorizer);
         rest_proxy_call_set_function (rest_call, ME_FUNCTION);
