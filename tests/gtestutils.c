@@ -2,6 +2,7 @@
 /*
  * libgfbgraph - GObject library for Facebook Graph API
  * Copyright (C) 2013-2015 Álvaro Peña <alvaropg@gmail.com>
+ *                    2019 Leesoo Ahn <yisooan@fedoraproject.org>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -54,14 +55,14 @@ gfbgraph_test_app_setup (void)
         GFBGraphTestApp *app;
         RestProxy *proxy;
         RestProxyCall *rest_call;
-        gchar *function_path;
-        GKeyFile *app_key_file;
-        gchar *app_key_filename;
-        GError *error = NULL;
-        const char *payload;
+        g_autofree gchar *function_path = NULL;
+        g_autofree gchar *app_key_filename = NULL;
+        g_autoptr(GError) error = NULL;
+        g_autoptr(GKeyFile) app_key_file = NULL;
+        g_autoptr(JsonParser) jparser = NULL;
+        g_autoptr(JsonReader) jreader = NULL;
         JsonNode *jnode;
-        JsonParser *jparser;
-        JsonReader *jreader;
+        const char *payload;
 
         app_key_filename = g_test_build_filename (G_TEST_BUILT,
                                                   "credentials.ini",
@@ -109,7 +110,6 @@ gfbgraph_test_app_setup (void)
         json_reader_read_element (jreader, 0);
         app->access_token = g_strdup(json_reader_get_string_value (jreader));
         json_reader_end_element (jreader);
-        g_object_unref(jparser);
 
         g_clear_object(&rest_call);
         g_clear_object(&proxy);
@@ -122,13 +122,13 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
 {
         RestProxy *proxy;
         RestProxyCall *rest_call;
-        gchar *function_path;
+        g_autofree gchar *function_path = NULL;
         const gchar *payload;
-        GError *error = NULL;
+        g_autoptr(GError) error = NULL;
         const GFBGraphTestApp *app = user_data;
         JsonNode *jnode;
-        JsonParser *jparser;
-        JsonReader *jreader;
+        g_autoptr(JsonParser) jparser = NULL;
+        g_autoptr(JsonReader) jreader = NULL;
         const gchar *access_token;
 
         /* Create a new user */
@@ -159,7 +159,7 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
         fixture->user_id = g_strdup (json_reader_get_string_value (jreader));
         json_reader_end_element (jreader);
         json_reader_read_element (jreader, 1);
-        access_token = g_strdup (json_reader_get_string_value (jreader));
+        access_token = json_reader_get_string_value (jreader);
         json_reader_end_element (jreader);
         json_reader_read_element (jreader, 3);
         fixture->user_email = g_strdup (json_reader_get_string_value (jreader));
@@ -167,18 +167,17 @@ gfbgraph_test_fixture_setup (GFBGraphTestFixture *fixture, gconstpointer user_da
 
         fixture->authorizer = gfbgraph_simple_authorizer_new (access_token);
 
-        if (function_path)
-                g_free (function_path);
         g_clear_object (&rest_call);
         g_clear_object (&proxy);
+
 }
 
 static void
 gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
-        SoupSession *ssession;
-        SoupMessage *smessage;
-        gchar *function_path;
+        g_autoptr(SoupSession) ssession = NULL;
+        g_autoptr(SoupMessage) smessage = NULL;
+        g_autofree gchar *function_path = NULL;
         guint status;
 
         /* Delete the test user and clean up memory */
@@ -192,7 +191,6 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gcon
         status = soup_session_send_message (ssession, smessage);
         g_assert_cmpint(status, ==, 200);
 
-        g_free (function_path);
         g_free (fixture->user_id);
         g_free (fixture->user_email);
         g_object_unref (fixture->authorizer);
@@ -201,18 +199,15 @@ gfbgraph_test_fixture_teardown (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gcon
 static void
 gfbgraph_test_me (GFBGraphTestFixture *fixture, G_GNUC_UNUSED gconstpointer user_data)
 {
-        GFBGraphUser *me;
-        GError *error = NULL;
+        g_autoptr(GFBGraphUser) me = NULL;
+        g_autoptr(GError) error = NULL;
 
         me = gfbgraph_user_get_me (GFBGRAPH_AUTHORIZER (fixture->authorizer), &error);
         g_assert_no_error (error);
         g_assert (GFBGRAPH_IS_USER (me));
 
         g_assert_cmpstr (fixture->user_id, ==, gfbgraph_node_get_id (GFBGRAPH_NODE (me)));
-
         g_assert_cmpstr (fixture->user_email, ==, gfbgraph_user_get_email (me));
-
-        g_object_unref (me);
 }
 
 static G_GNUC_UNUSED void
@@ -280,6 +275,7 @@ main (int argc, char **argv)
                         g_free (app->client_secret);
                 if (app->access_token)
                         g_free (app->access_token);
+                g_free (app);
         }
 
         return test_result;
