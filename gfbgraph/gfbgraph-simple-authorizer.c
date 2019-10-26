@@ -104,6 +104,7 @@ gfbgraph_simple_authorizer_finalize (GObject *obj)
         priv = GFBGRAPH_SIMPLE_AUTHORIZER_GET_PRIVATE (obj);
 
         g_free (priv->access_token);
+        g_mutex_clear (&priv->mutex);
 
         G_OBJECT_CLASS(parent_class)->finalize (obj);
 }
