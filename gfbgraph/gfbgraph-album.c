@@ -138,6 +138,17 @@ gfbgraph_album_class_init (GFBGraphAlbumClass *klass)
 static void
 gfbgraph_album_finalize (GObject *obj)
 {
+        GFBGraphAlbumPrivate *priv;
+
+        priv = GFBGRAPH_ALBUM_GET_PRIVATE (obj);
+
+        if (priv->name)
+                g_free (priv->name);
+        if (priv->description)
+                g_free (priv->description);
+        if (priv->cover_photo)
+                g_free (priv->cover_photo);
+
         G_OBJECT_CLASS(parent_class)->finalize (obj);
 }
 
