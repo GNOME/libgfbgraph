@@ -1,6 +1,6 @@
 m4_define([api_major], [0])
-m4_define([api_minor], [2])
-m4_define([api_micro], [4])
+m4_define([api_minor], [3])
+m4_define([api_micro], [0])
 
 m4_define([gfbgraph_version], [api_major.api_minor.api_micro])
 
