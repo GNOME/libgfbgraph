@@ -1,4 +1,17 @@
 =================
+LibGFBGraph 0.2.4
+=================
+
+The changes include:
+
+- Change Facebook Graph API version to v2.10 by Álvaro Peña.
+- Fix memory leaks of GFBGraphNode class by Krzesimir Nowak.
+- Support g_autoptr for GFBGraphAlbum, GFBGraphNode, GFBGraphPhoto,
+  GFBGraphUser by Leesoo Ahn.
+- Fix memory leaks of GFBGraphUser, GFBGraphSimpleAuthorizer,
+  GFBGraphAlbum by Leesoo Ahn.
+
+=================
 LibGFBGraph 0.2.3
 =================
 
