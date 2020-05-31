@@ -1,7 +1,8 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
  * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ *               2020 Leesoo Ahn <yisooan@fedoraproject.org>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,10 +47,12 @@ gfbgraph_authorizer_default_init (GFBGraphAuthorizerInterface *iface)
  * This method modifies @call in place and is thread safe.
  */
 void
-gfbgraph_authorizer_process_call (GFBGraphAuthorizer *iface, RestProxyCall *call)
+gfbgraph_authorizer_process_call (GFBGraphAuthorizer *iface,
+                                  RestProxyCall      *call)
 {
-        g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (iface));
-        GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->process_call (iface, call);
+  g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (iface));
+
+  GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->process_call (iface, call);
 }
 
 /**
@@ -63,10 +66,12 @@ gfbgraph_authorizer_process_call (GFBGraphAuthorizer *iface, RestProxyCall *call
  * This method modifies @message in place and is thread safe.
  */
 void
-gfbgraph_authorizer_process_message (GFBGraphAuthorizer *iface, SoupMessage *message)
+gfbgraph_authorizer_process_message (GFBGraphAuthorizer *iface,
+                                     SoupMessage        *message)
 {
-        g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (iface));
-        GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->process_message (iface, message);
+  g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (iface));
+
+  GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->process_message (iface, message);
 }
 
 /**
@@ -83,8 +88,13 @@ gfbgraph_authorizer_process_message (GFBGraphAuthorizer *iface, SoupMessage *mes
  * Returns: %TRUE if the authorizer now has a valid token.
  */
 gboolean
-gfbgraph_authorizer_refresh_authorization (GFBGraphAuthorizer *iface, GCancellable *cancellable, GError **error)
+gfbgraph_authorizer_refresh_authorization (GFBGraphAuthorizer  *iface,
+                                           GCancellable        *cancellable,
+                                           GError             **error)
 {
-        g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (iface), FALSE);
-        return GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->refresh_authorization (iface, cancellable, error);
+  g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (iface), FALSE);
+
+  return GFBGRAPH_AUTHORIZER_GET_IFACE (iface)->refresh_authorization (iface,
+                                                                       cancellable,
+                                                                       error);
 }

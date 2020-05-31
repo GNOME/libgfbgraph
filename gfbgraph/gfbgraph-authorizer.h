@@ -1,7 +1,8 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
  * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ *               2020 Leesoo Ahn <yisooan@fedoraproject.org>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,10 +28,13 @@
 
 G_BEGIN_DECLS
 
-#define GFBGRAPH_TYPE_AUTHORIZER          (gfbgraph_authorizer_get_type ())
-#define GFBGRAPH_AUTHORIZER(o)            (G_TYPE_CHECK_INSTANCE_CAST ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizer))
-#define GFBGRAPH_IS_AUTHORIZER(o)         (G_TYPE_CHECK_INSTANCE_TYPE ((o), GFBGRAPH_TYPE_AUTHORIZER))
-#define GFBGRAPH_AUTHORIZER_GET_IFACE(o)  (G_TYPE_INSTANCE_GET_INTERFACE ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizerInterface))
+#define GFBGRAPH_TYPE_AUTHORIZER (gfbgraph_authorizer_get_type ())
+#define GFBGRAPH_AUTHORIZER(o) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizer))
+#define GFBGRAPH_IS_AUTHORIZER(o) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((o), GFBGRAPH_TYPE_AUTHORIZER))
+#define GFBGRAPH_AUTHORIZER_GET_IFACE(o) \
+  (G_TYPE_INSTANCE_GET_INTERFACE ((o), GFBGRAPH_TYPE_AUTHORIZER, GFBGraphAuthorizerInterface))
 
 typedef struct _GFBGraphAuthorizer          GFBGraphAuthorizer;
 typedef struct _GFBGraphAuthorizerInterface GFBGraphAuthorizerInterface;
@@ -46,26 +50,26 @@ typedef struct _GFBGraphAuthorizerInterface GFBGraphAuthorizerInterface;
  * Interface structure for #GFBGraphAuthorizer. All methos should be thread safe.
  **/
 struct _GFBGraphAuthorizerInterface {
-        GTypeInterface parent;
+  GTypeInterface parent;
 
-        void        (*process_call)          (GFBGraphAuthorizer *iface,
-                                              RestProxyCall *call);
-        void        (*process_message)       (GFBGraphAuthorizer *iface,
-                                              SoupMessage *message);
-        gboolean    (*refresh_authorization) (GFBGraphAuthorizer *iface,
-                                              GCancellable *cancellable,
-                                              GError **error);
+  void      (*process_call)           (GFBGraphAuthorizer *iface,
+                                       RestProxyCall      *call);
+  void      (*process_message)        (GFBGraphAuthorizer *iface,
+                                       SoupMessage        *message);
+  gboolean  (*refresh_authorization)  (GFBGraphAuthorizer  *iface,
+                                       GCancellable        *cancellable,
+                                       GError             **error);
 };
 
 GType    gfbgraph_authorizer_get_type              (void) G_GNUC_CONST;
 
 void     gfbgraph_authorizer_process_call          (GFBGraphAuthorizer *iface,
-                                                    RestProxyCall *call);
+                                                    RestProxyCall      *call);
 void     gfbgraph_authorizer_process_message       (GFBGraphAuthorizer *iface,
-                                                    SoupMessage *message);
-gboolean gfbgraph_authorizer_refresh_authorization (GFBGraphAuthorizer *iface,
-                                                    GCancellable *cancellable,
-                                                    GError **error);
+                                                    SoupMessage        *message);
+gboolean gfbgraph_authorizer_refresh_authorization (GFBGraphAuthorizer  *iface,
+                                                    GCancellable        *cancellable,
+                                                    GError             **error);
 
 G_END_DECLS
 

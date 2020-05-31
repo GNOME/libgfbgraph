@@ -1,7 +1,8 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
  * Copyright (C) 2013 Álvaro Peña <alvaropg@gmail.com>
+ *               2020 Leesoo Ahn <yisooan@fedoraproject.org>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,27 +40,27 @@ G_DEFINE_INTERFACE (GFBGraphConnectable, gfbgraph_connectable, GFBGRAPH_TYPE_NOD
 static void
 gfbgraph_connectable_default_init (GFBGraphConnectableInterface *iface)
 {
-        iface->connections = NULL;
+  iface->connections = NULL;
 
-        iface->get_connection_post_params = NULL;
-        iface->parse_connected_data = NULL;
+  iface->get_connection_post_params = NULL;
+  iface->parse_connected_data = NULL;
 }
 
-static GHashTable*
+static GHashTable *
 get_connections (GFBGraphConnectableInterface *iface)
 {
-        /* The GHashTable contains the connections for a node.
-         * The key must be the g_type_name() of a GFBGRAPH_TYPE_NODE, and the value
-         * must be the function name to call in order to retrieve the nodes connected
-         * to the GFBGraphNode indicated by GFBGRAPH_TYPE_NODE.
-         */
-        GHashTable *connections;
+  /* The GHashTable contains the connections for a node.
+   * The key must be the g_type_name() of a GFBGRAPH_TYPE_NODE, and the value
+   * must be the function name to call in order to retrieve the nodes connected
+   * to the GFBGraphNode indicated by GFBGRAPH_TYPE_NODE.
+   */
+  GHashTable *connections;
 
-        connections = iface->connections;
-        /* If no connections... Why you implement this iface? */
-        g_assert (g_hash_table_size (connections) > 0);
+  connections = iface->connections;
+  /* If no connections... Why you implement this iface? */
+  g_assert (g_hash_table_size (connections) > 0);
 
-        return connections;
+  return connections;
 }
 
 /**
@@ -72,19 +73,20 @@ get_connections (GFBGraphConnectableInterface *iface)
  *
  * Returns: (transfer full): A string based #GHashTable with the params and his values or %NULL.
  **/
-GHashTable*
-gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GType node_type)
+GHashTable *
+gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self,
+                                                 GType                node_type)
 {
-        GFBGraphConnectableInterface *iface;
+  GFBGraphConnectableInterface *iface;
 
-        g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
-        g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), NULL);
-        g_return_val_if_fail (gfbgraph_connectable_is_connectable_to (self, node_type), NULL);
+  g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
+  g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), NULL);
+  g_return_val_if_fail (gfbgraph_connectable_is_connectable_to (self, node_type), NULL);
 
-        iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
-        g_assert (iface->get_connection_post_params != NULL);
+  iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  g_assert (iface->get_connection_post_params != NULL);
 
-        return iface->get_connection_post_params (self, node_type);
+  return iface->get_connection_post_params (self, node_type);
 }
 
 /**
@@ -98,17 +100,19 @@ gfbgraph_connectable_get_connection_post_params (GFBGraphConnectable *self, GTyp
  *
  * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of #GFBGraphNode created from the @payload or %NULL.
  **/
-GList*
-gfbgraph_connectable_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)
+GList *
+gfbgraph_connectable_parse_connected_data (GFBGraphConnectable  *self,
+                                           const gchar          *payload,
+                                           GError              **error)
 {
-        GFBGraphConnectableInterface *iface;
+  GFBGraphConnectableInterface *iface;
 
-        g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
+  g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
 
-        iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
-        g_assert (iface->parse_connected_data != NULL);
+  iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  g_assert (iface->parse_connected_data != NULL);
 
-        return iface->parse_connected_data (self, payload, error);
+  return iface->parse_connected_data (self, payload, error);
 }
 
 
@@ -124,18 +128,19 @@ gfbgraph_connectable_parse_connected_data (GFBGraphConnectable *self, const gcha
  * %FALSE otherwise.
  **/
 gboolean
-gfbgraph_connectable_is_connectable_to (GFBGraphConnectable *self, GType node_type)
+gfbgraph_connectable_is_connectable_to (GFBGraphConnectable *self,
+                                        GType                node_type)
 {
-        GFBGraphConnectableInterface *iface;
-        GHashTable *connections;
+  GFBGraphConnectableInterface *iface;
+  GHashTable *connections;
 
-        g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), FALSE);
-        g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), FALSE);
+  g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), FALSE);
+  g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), FALSE);
 
-        iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  connections = get_connections (iface);
 
-        connections = get_connections (iface);
-        return g_hash_table_contains (connections, g_type_name (node_type));
+  return g_hash_table_contains (connections, g_type_name (node_type));
 }
 
 /**
@@ -148,20 +153,21 @@ gfbgraph_connectable_is_connectable_to (GFBGraphConnectable *self, GType node_ty
  *
  * Returns: (transfer none): a const #gchar with the function path or %NULL.
  **/
-const gchar*
-gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_type)
+const gchar *
+gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self,
+                                          GType                node_type)
 {
-        GFBGraphConnectableInterface *iface;
-        GHashTable *connections;
+  GFBGraphConnectableInterface *iface;
+  GHashTable *connections;
 
-        g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
-        g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), NULL);
-        g_return_val_if_fail (gfbgraph_connectable_is_connectable_to (self, node_type), NULL);
+  g_return_val_if_fail (GFBGRAPH_IS_CONNECTABLE (self), NULL);
+  g_return_val_if_fail (g_type_is_a (node_type, GFBGRAPH_TYPE_NODE), NULL);
+  g_return_val_if_fail (gfbgraph_connectable_is_connectable_to (self, node_type), NULL);
 
-        iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  iface = GFBGRAPH_CONNECTABLE_GET_IFACE (self);
+  connections = get_connections (iface);
 
-        connections = get_connections (iface);
-        return (const gchar *) g_hash_table_lookup (connections, g_type_name (node_type));
+  return (const gchar *) g_hash_table_lookup (connections, g_type_name (node_type));
 }
 
 /**
@@ -179,36 +185,38 @@ gfbgraph_connectable_get_connection_path (GFBGraphConnectable *self, GType node_
  *
  * Returns: (element-type GFBGraphNode) (transfer full): a newly-allocated #GList of #GFBGraphNode with the same #GType as @self.
  **/
-GList*
-gfbgraph_connectable_default_parse_connected_data (GFBGraphConnectable *self, const gchar *payload, GError **error)
+GList *
+gfbgraph_connectable_default_parse_connected_data (GFBGraphConnectable  *self,
+                                                   const gchar          *payload,
+                                                   GError              **error)
 {
-        GList *nodes_list = NULL;
-        JsonParser *jparser;
-        GType node_type;
+  GList *nodes_list = NULL;
+  JsonParser *jparser;
+  GType node_type;
 
-        node_type = G_OBJECT_TYPE (self);
+  node_type = G_OBJECT_TYPE (self);
 
-        jparser = json_parser_new ();
-        if (json_parser_load_from_data (jparser, payload, -1, error)) {
-                JsonNode *root_jnode;
-                JsonObject *main_jobject;
-                JsonArray *nodes_jarray;
-                int i = 0;
+  jparser = json_parser_new ();
+  if (json_parser_load_from_data (jparser, payload, -1, error)) {
+    JsonNode *root_jnode;
+    JsonObject *main_jobject;
+    JsonArray *nodes_jarray;
+    int i = 0;
 
-                root_jnode = json_parser_get_root (jparser);
-                main_jobject = json_node_get_object (root_jnode);
-                nodes_jarray = json_object_get_array_member (main_jobject, "data");
-                for (i = 0; i < json_array_get_length (nodes_jarray); i++) {
-                        JsonNode *jnode;
-                        GFBGraphNode *node;
+    root_jnode = json_parser_get_root (jparser);
+    main_jobject = json_node_get_object (root_jnode);
+    nodes_jarray = json_object_get_array_member (main_jobject, "data");
+    for (i = 0; i < json_array_get_length (nodes_jarray); i++) {
+      JsonNode *jnode;
+      GFBGraphNode *node;
 
-                        jnode = json_array_get_element (nodes_jarray, i);
-                        node = GFBGRAPH_NODE (json_gobject_deserialize (node_type, jnode));
-                        nodes_list = g_list_append (nodes_list, node);
-                }
-        }
+      jnode = json_array_get_element (nodes_jarray, i);
+      node = GFBGRAPH_NODE (json_gobject_deserialize (node_type, jnode));
+      nodes_list = g_list_append (nodes_list, node);
+    }
+  }
 
-        g_clear_object (&jparser);
+  g_clear_object (&jparser);
 
-        return nodes_list;
+  return nodes_list;
 }

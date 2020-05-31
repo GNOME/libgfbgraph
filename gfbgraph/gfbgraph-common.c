@@ -1,7 +1,8 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 8; tab-width: 8 -*-  */
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2 -*-  */
 /*
  * libgfbgraph - GObject library for Facebook Graph API
  * Copyright (C) 2013-2015 Álvaro Peña <alvaropg@gmail.com>
+ *               2020 Leesoo Ahn <yisooan@fedoraproject.org>
  *
  * GFBGraph is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,20 +33,20 @@
  *
  * Returns: (transfer full): a new #RestProxyCall or %NULL in case of error.
  **/
-RestProxyCall*
+RestProxyCall *
 gfbgraph_new_rest_call (GFBGraphAuthorizer *authorizer)
 {
-        RestProxy *proxy;
-        RestProxyCall *rest_call;
+  RestProxy *proxy;
+  RestProxyCall *rest_call;
 
-        g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer), NULL);
+  g_return_val_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer), NULL);
 
-        proxy = rest_proxy_new (FACEBOOK_ENDPOINT, FALSE);
-        rest_call = rest_proxy_new_call (proxy);
+  proxy = rest_proxy_new (FACEBOOK_ENDPOINT, FALSE);
+  rest_call = rest_proxy_new_call (proxy);
 
-        gfbgraph_authorizer_process_call (authorizer, rest_call);
+  gfbgraph_authorizer_process_call (authorizer, rest_call);
 
-        g_object_unref (proxy);
+  g_object_unref (proxy);
 
-        return rest_call;
+  return rest_call;
 }
