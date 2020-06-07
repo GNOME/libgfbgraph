@@ -28,6 +28,7 @@
  * With the "me" functions, (see gfbgraph_user_get_me()) you can query for the logged user node.
  **/
 
+#include <gmodule.h>
 #include <json-glib/json-glib.h>
 
 #include "gfbgraph-user.h"
@@ -46,10 +47,6 @@ struct _GFBGraphUserPrivate {
   gchar *name;
   gchar *email;
 };
-
-typedef struct {
-  GFBGraphUser *user;
-} GFBGraphUserAsyncData;
 
 typedef struct {
   GFBGraphAuthorizer *authorizer;
@@ -167,14 +164,6 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 
 /* --- Private Functions --- */
 static void
-async_data_free (GFBGraphUserAsyncData *data)
-{
-  g_object_unref (data->user);
-
-  g_slice_free (GFBGraphUserAsyncData, data);
-}
-
-static void
 connection_async_data_free (GFBGraphUserConnectionAsyncData *data)
 {
   g_object_unref (data->authorizer);
@@ -183,17 +172,24 @@ connection_async_data_free (GFBGraphUserConnectionAsyncData *data)
 }
 
 static void
-get_me_async_thread (GSimpleAsyncResult *simple_async,
-                     GFBGraphAuthorizer *authorizer,
-                     GCancellable        cancellable)
+get_me_async_io_thread (GTask        *task,
+                        gpointer      source_object,
+                        gpointer      task_data,
+                        GCancellable *cancellable)
 {
-  GFBGraphUserAsyncData *data;
+  GFBGraphAuthorizer *authorizer = GFBGRAPH_AUTHORIZER (source_object);
+  GFBGraphUser *user = NULL;
   GError *error = NULL;
 
-  data = (GFBGraphUserAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
-  data->user = gfbgraph_user_get_me (authorizer, &error);
-  if (error != NULL)
-    g_simple_async_result_take_error (simple_async, error);
+  user = gfbgraph_user_get_me (authorizer, &error);
+  if (user && !error)
+    g_task_return_pointer (task, user, g_object_unref);
+  else
+    {
+      /* FIXME: better way to handle error */
+      if (error)
+        g_task_return_error (task, error);
+    }
 }
 
 static void
@@ -308,31 +304,19 @@ gfbgraph_user_get_me_async (GFBGraphAuthorizer  *authorizer,
                             GAsyncReadyCallback  callback,
                             gpointer             user_data)
 {
-  GSimpleAsyncResult *simple_async;
-  GFBGraphUserAsyncData *data;
+  GTask *task;
 
   g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer));
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
   g_return_if_fail (callback != NULL);
 
-  simple_async = g_simple_async_result_new (G_OBJECT (authorizer),
-                                            callback,
-                                            user_data,
-                                            gfbgraph_user_get_me_async);
-  g_simple_async_result_set_check_cancellable (simple_async, cancellable);
+  task = g_task_new (authorizer,
+                     cancellable,
+                     callback,
+                     user_data);
+  g_task_run_in_thread (task, get_me_async_io_thread);
 
-  data = g_slice_new (GFBGraphUserAsyncData);
-  data->user = NULL;
-
-  g_simple_async_result_set_op_res_gpointer (simple_async,
-                                             data,
-                                             (GDestroyNotify)async_data_free);
-  g_simple_async_result_run_in_thread (simple_async,
-                                       (GSimpleAsyncThreadFunc)get_me_async_thread,
-                                       G_PRIORITY_DEFAULT,
-                                       cancellable);
-
-  g_object_unref (simple_async);
+  g_object_unref (task);
 }
 
 /**
@@ -351,22 +335,10 @@ gfbgraph_user_get_me_async_finish (GFBGraphAuthorizer  *authorizer,
                                    GAsyncResult        *result,
                                    GError             **error)
 {
-  GSimpleAsyncResult *simple_async;
-  GFBGraphUserAsyncData *data;
-
-  g_return_val_if_fail (g_simple_async_result_is_valid (result,
-                                                        G_OBJECT (authorizer),
-                                                        gfbgraph_user_get_me_async),
-                        NULL);
+  g_return_val_if_fail (g_task_is_valid (result, authorizer), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  simple_async = G_SIMPLE_ASYNC_RESULT (result);
-
-  if (g_simple_async_result_propagate_error (simple_async, error))
-    return NULL;
-
-  data = (GFBGraphUserAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
-  return data->user;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**
