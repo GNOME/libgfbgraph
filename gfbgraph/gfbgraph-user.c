@@ -49,9 +49,10 @@ struct _GFBGraphUserPrivate {
 };
 
 typedef struct {
+  GFBGraphUser *user;
   GFBGraphAuthorizer *authorizer;
   GList *nodes;
-} GFBGraphUserConnectionAsyncData;
+} UserAsyncData;
 
 #define GFBGRAPH_USER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE((o), GFBGRAPH_TYPE_USER, GFBGraphUserPrivate))
@@ -164,14 +165,6 @@ gfbgraph_user_class_init (GFBGraphUserClass *klass)
 
 /* --- Private Functions --- */
 static void
-connection_async_data_free (GFBGraphUserConnectionAsyncData *data)
-{
-  g_object_unref (data->authorizer);
-
-  g_slice_free (GFBGraphUserConnectionAsyncData, data);
-}
-
-static void
 get_me_async_io_thread (GTask        *task,
                         gpointer      source_object,
                         gpointer      task_data,
@@ -192,18 +185,60 @@ get_me_async_io_thread (GTask        *task,
     }
 }
 
-static void
-get_albums_async_thread (GSimpleAsyncResult *simple_async,
-                         GFBGraphUser       *user,
-                         GCancellable        cancellable)
+static UserAsyncData *
+user_async_data_new (GFBGraphUser       *user,
+                     GFBGraphAuthorizer *authorizer)
 {
-  GFBGraphUserConnectionAsyncData *data;
+  UserAsyncData *new_data = NULL;
+
+  new_data = g_slice_new0 (UserAsyncData);
+  if (GFBGRAPH_IS_USER (user))
+    new_data->user = g_object_ref (user);
+  if (GFBGRAPH_IS_AUTHORIZER (authorizer))
+    new_data->authorizer = g_object_ref (authorizer);
+
+  return new_data;
+}
+
+static void
+user_async_data_free (gpointer data)
+{
+  UserAsyncData *real_data = (UserAsyncData *)data;
+
+  g_return_if_fail (data != NULL);
+
+  if (GFBGRAPH_IS_USER (real_data->user))
+    g_object_unref (real_data->user);
+  if (GFBGRAPH_IS_AUTHORIZER (real_data->authorizer))
+    g_object_unref (real_data->authorizer);
+  if (real_data->nodes)
+    g_list_free_full (real_data->nodes, g_object_unref/* XXX */);
+
+  g_slice_free (UserAsyncData, real_data);
+}
+
+static void
+get_albums_async_io_thread (GTask        *task,
+                            gpointer      source_object,
+                            gpointer      task_data,
+                            GCancellable *cancellable)
+{
+  UserAsyncData *data = NULL;
   GError *error = NULL;
 
-  data = (GFBGraphUserConnectionAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
-  data->nodes = gfbgraph_user_get_albums (user, data->authorizer, &error);
-  if (error != NULL)
-    g_simple_async_result_take_error (simple_async, error);
+  data = (UserAsyncData *)task_data;
+  if (data && data->user && data->authorizer)
+    {
+      data->nodes = gfbgraph_user_get_albums (data->user, data->authorizer, &error);
+      if (data->nodes && !error)
+        g_task_return_pointer (task, data, user_async_data_free);
+    }
+  else
+    {
+      if (error)
+        g_task_return_error (task, error);
+      user_async_data_free (data);
+    }
 }
 
 /**
@@ -386,35 +421,25 @@ gfbgraph_user_get_albums_async (GFBGraphUser        *user,
                                 GAsyncReadyCallback  callback,
                                 gpointer             user_data)
 {
-  GSimpleAsyncResult *simple_async;
-  GFBGraphUserConnectionAsyncData *data;
+  GTask *task;
+  UserAsyncData *data;
 
   g_return_if_fail (GFBGRAPH_IS_USER (user));
   g_return_if_fail (GFBGRAPH_IS_AUTHORIZER (authorizer));
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
   g_return_if_fail (callback != NULL);
 
-  simple_async = g_simple_async_result_new (G_OBJECT (user),
-                                            callback,
-                                            user_data,
-                                            gfbgraph_user_get_albums_async);
-  g_simple_async_result_set_check_cancellable (simple_async,
-                                               cancellable);
+  task = g_task_new (user,
+                     cancellable,
+                     callback,
+                     user_data);
 
-  data = g_slice_new (GFBGraphUserConnectionAsyncData);
-  data->nodes = NULL;
-  data->authorizer = authorizer;
-  g_object_ref (data->authorizer);
+  data = user_async_data_new (user, authorizer);
+  g_task_set_task_data (task, data, NULL);
 
-  g_simple_async_result_set_op_res_gpointer (simple_async,
-                                             data,
-                                             (GDestroyNotify)connection_async_data_free);
-  g_simple_async_result_run_in_thread (simple_async,
-                                       (GSimpleAsyncThreadFunc)get_albums_async_thread,
-                                       G_PRIORITY_DEFAULT,
-                                       cancellable);
+  g_task_run_in_thread (task, get_albums_async_io_thread);
 
-  g_object_unref (simple_async);
+  g_object_unref (task);
 }
 
 /**
@@ -433,22 +458,28 @@ gfbgraph_user_get_albums_async_finish (GFBGraphUser  *user,
                                        GAsyncResult  *result,
                                        GError       **error)
 {
-  GSimpleAsyncResult *simple_async;
-  GFBGraphUserConnectionAsyncData *data;
+  UserAsyncData *data;
+  GList *nodes = NULL;
 
   g_return_val_if_fail (GFBGRAPH_IS_USER (user), NULL);
-  g_return_val_if_fail (g_simple_async_result_is_valid (result,
-                                                        G_OBJECT (user),
-                                                        gfbgraph_user_get_albums_async), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, NULL), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  simple_async = G_SIMPLE_ASYNC_RESULT (result);
-
-  if (g_simple_async_result_propagate_error (simple_async, error))
+  data = g_task_propagate_pointer (G_TASK (result), error);
+  if (!data || g_task_had_error (G_TASK (result))) /* error */
+    /* Don't need to free or unref objects about UserAsyncData,
+     * GTask takes the responsibility inside its thread. */
     return NULL;
 
-  data = (GFBGraphUserConnectionAsyncData *) g_simple_async_result_get_op_res_gpointer (simple_async);
-  return data->nodes;
+  if (data->nodes)
+    {
+      nodes = data->nodes;
+      data->nodes = NULL; /* For freeing UserAsyncData */
+    }
+
+  user_async_data_free (data);
+
+  return nodes;
 }
 
 /**
