@@ -452,6 +452,7 @@ gfbgraph_photo_download_default_size (GFBGraphPhoto       *photo,
 
   session = soup_session_sync_new ();
   requester = soup_requester_new ();
+  g_object_set (G_OBJECT (session), "ssl-use-system-ca-file", TRUE, NULL);
   soup_session_add_feature (session, SOUP_SESSION_FEATURE (requester));
 
   request = soup_requester_request (requester, priv->source, error);
