@@ -248,6 +248,7 @@ main (int argc, char **argv)
 
         g_log_set_always_fatal (G_LOG_LEVEL_ERROR | G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL | G_LOG_LEVEL_CRITICAL);
 
+#if 0
         app = gfbgraph_test_app_setup ();
 
         g_test_add ("/GFBGraph/Me",
@@ -257,7 +258,6 @@ main (int argc, char **argv)
                     gfbgraph_test_me,
                     gfbgraph_test_fixture_teardown);
 
-#if 0
         g_test_add ("/GFBGraph/Album",
                     GFBGraphTestFixture,
                     app,
@@ -268,6 +268,7 @@ main (int argc, char **argv)
 
         test_result = g_test_run ();
 
+#if 0
         if (app) {
                 if (app->client_id)
                         g_free (app->client_id);
@@ -277,6 +278,7 @@ main (int argc, char **argv)
                         g_free (app->access_token);
                 g_free (app);
         }
+#endif
 
         return test_result;
 }
