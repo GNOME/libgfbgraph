@@ -1,4 +1,13 @@
 =================
+LibGFBGraph 0.2.5
+=================
+
+The changes include:
+
+- Fix CVE-2021-39358 by forcing TLS certificate validation by Douglas R. Reno.
+- Temporarily disable testcases by Leesoo Ahn.
+
+=================
 LibGFBGraph 0.2.4
 =================
 
