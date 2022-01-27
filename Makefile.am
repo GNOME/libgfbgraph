@@ -1,8 +1,7 @@
 SUBDIRS = gfbgraph docs tests
 ACLOCAL_AMFLAGS = -I m4
 
-libgfbgraphdocdir = ${prefix}/doc/libgfbgraph
-libgfbgraphdoc_DATA = \
+doc_DATA = \
 	README\
 	COPYING\
 	AUTHORS\
